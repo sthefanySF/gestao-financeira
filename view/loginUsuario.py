@@ -17,12 +17,12 @@ class Login:
 
     def __init__(self):
         self._janela = ttk.Window(themename='litera')
-        self._janela.geometry('700x400')
+        self._janela.geometry('800x500')
         self._janela.title('Gestão Fácil/Login')
 
         self._parte_verde = tk.Label(self._janela, background='#33bc7d')
 
-        image = Image.open(r"C:\Users\Emilly\Desktop\gestao-financeira\logo (4).png")  # Substitua pelo caminho real da imagem
+        image = Image.open(r"C:\Users\sthef\OneDrive\Documentos\GitHub\gestao-financeira\logo (4).png")  # Substitua pelo caminho real da imagem
         photo = ImageTk.PhotoImage(image)
         self._image_label = tk.Label(self._parte_verde, image=photo, bg='#33bc7d', width=450)
         self._image_label.pack()
