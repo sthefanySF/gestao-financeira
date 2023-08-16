@@ -5,10 +5,10 @@ from PIL import Image, ImageTk
 import webbrowser
 
 class TelaInicial:
-    def __init__(self):
-        self._janela = ttk.Window(themename='litera')
-        self._janela.geometry('850x500')
+    def __init__(self,master):
+        self._janela = master
         self._janela.title('Gestão Fácil/Tela inicial')
+        self._janela.geometry('850x500')
 
         frame_menu = ttk.Frame(self._janela)
         frame_menu.grid(row=0, column=0)
@@ -41,7 +41,8 @@ class TelaInicial:
         self._mtr2 = ttk.Meter(self._janela, subtext='Gastos', bootstyle='danger', interactive=False, amountused=20)
         self._mtr2.grid(row=1, column=5, rowspan=4, sticky='e', padx=20)
         
-        self._janela.mainloop()
-
+        
 if __name__ == "__main__":
-    tela_inicial = TelaInicial()
+    root = ttk.Window(theme='litera')
+    tela_inicial = TelaInicial(root)
+    root.mainloop()

@@ -5,6 +5,8 @@ from PIL import Image, ImageTk
 import webbrowser
 
 from telaInicial import TelaInicial
+from cadastroUsuario import Cadastro
+
 
 def open_link(event):
     webbrowser.open("https://www.example.com")  # Substitua pelo link real
@@ -12,13 +14,23 @@ def open_link(event):
 class Login:
    
     def entrar(self):
-        tela = TelaInicial(self._janela)  # Cria uma instância da classe Tela
+        tela_inicial_toplevel = tk.Toplevel(self._janela)
+        tela_inicial = TelaInicial(tela_inicial_toplevel)
+        
+        
+    def abrir_cadastrar(self):
+        cadastro_toplevel = tk.Toplevel(self._janela)
+        cadastro_window = Cadastro(cadastro_toplevel)
 
 
-    def __init__(self):
-        self._janela = ttk.Window(themename='litera')
-        self._janela.geometry('800x500')
+    
+        #self._janela = ttk.Window(themename='litera')
+    
+    def __init__(self, master):
+        self._janela = master
         self._janela.title('Gestão Fácil/Login')
+        self._janela.geometry('800x500')
+
 
         self._parte_verde = tk.Label(self._janela, background='#33bc7d')
 
@@ -49,7 +61,8 @@ class Login:
         self._btn = ttk.Button(self._frame_login, text='Entrar', width=20, bootstyle="success", command=self.entrar)
         self._btn.grid(row=6, column=3, pady=10)
 
-        self._btn_cadastrar = ttk.Button(self._frame_login, text='Cadastar', bootstyle="success-outline").grid(row=7, column=3, pady=10)
+        self._btn_cadastrar = ttk.Button(self._frame_login, text='Cadastar', bootstyle="success-outline", command=self.abrir_cadastrar)
+        self._btn_cadastrar.grid(row=7, column=3, pady=10)
 
         # Configuração das colunas e linhas do grid
         self._janela.grid_columnconfigure(0, weight=1)
@@ -62,4 +75,6 @@ class Login:
         self._janela.mainloop()
 
 if __name__ == "__main__":
-    login = Login()
+    root = ttk.Window(themename='litera')
+    login = Login(root)
+    root.mainloop()
