@@ -4,6 +4,8 @@ from ttkbootstrap.constants import *
 from PIL import Image, ImageTk
 import webbrowser
 
+from perfilUsuario import PerfilUsuario
+
 class TelaInicial:
     def __init__(self,master):
         self._janela = master
@@ -13,7 +15,7 @@ class TelaInicial:
         frame_menu = ttk.Frame(self._janela)
         frame_menu.grid(row=0, column=0)
         margin_menu = 3
-        self._btn_perfil = ttk.Button(frame_menu, text='Meu perfil', width=20, bootstyle="success")
+        self._btn_perfil = ttk.Button(frame_menu, text='Meu perfil', width=20, bootstyle="success", command=self.abrir_perfil)
         self._btn_perfil.grid(row=0, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
         self._btn_inicio = ttk.Button(frame_menu, text='Inicio', width=20, bootstyle="success")
@@ -40,6 +42,10 @@ class TelaInicial:
 
         self._mtr2 = ttk.Meter(self._janela, subtext='Gastos', bootstyle='danger', interactive=False, amountused=20)
         self._mtr2.grid(row=1, column=5, rowspan=4, sticky='e', padx=20)
+        
+        
+    def abrir_perfil(self):
+        perfil_window = PerfilUsuario(self._janela)
         
         
 if __name__ == "__main__":

@@ -6,23 +6,40 @@ import webbrowser
 
 
 
+
+
 class Cadastro:
 
     def cadastrar(self):
+        from loginUsuario import Login
+        Login()
         Cadastro()
+        
+    def voltar(self):
+        from loginUsuario import Login
+        self._janela.destroy()
+        login_window = ttk.Window(theme='litera')  # Cria uma nova janela de login
+        login = Login(login_window)
+        login_window.mainloop()
+        
+        
+        
 
     
         #self._janela = ttk.Toplevel(themename='litera')
-    def __init__(self, master):
+    def __init__(self, master, photo):
         self._janela = master
         self._janela.title('Gestão Fácil/Cadastro')
         self._janela.geometry('800x500')
+        self._photo = photo  # Use the passed image
+
 
         self._parte_verde = tk.Label(self._janela, background='#33bc7d')
 
-        image = Image.open(r"C:\Users\sthef\OneDrive\Documentos\GitHub\gestao-financeira\logo (4).png")  # Substitua pelo caminho real da imagem
+        image = Image.open(r"C:\Users\sthef\OneDrive\Documentos\GitHub\gestao-financeira\logo (4).png")
         photo = ImageTk.PhotoImage(image)
         self._image_label = tk.Label(self._parte_verde, image=photo, bg='#33bc7d', width=450)
+        self._image_label.image = photo  # Mantenha a referência à imagem
         self._image_label.pack()
 
         self._parte_verde.grid(row=0, column=0, rowspan=4, sticky="w")
@@ -42,6 +59,9 @@ class Cadastro:
         self._btn_cadastrar = ttk.Button(self._frame_cadastro, text='Cadastrar', width=20, bootstyle="success-outline")
         self._btn_cadastrar.grid(row=7, column=3, pady=10)
 
+        self._btn_voltar = ttk.Button(self._frame_cadastro, text='Voltar', width=20, bootstyle="success-outline", command=self.voltar)
+        self._btn_voltar.grid(row=8, column=3, pady=10)
+        
         # Configuração das colunas e linhas do grid
         self._janela.grid_columnconfigure(0, weight=1)
         self._janela.grid_columnconfigure(1, weight=1)
@@ -54,5 +74,5 @@ class Cadastro:
 
 if __name__ == "__main__":
     root = ttk.Window(theme='litera')
-    cadastro = Cadastro(root)
+    cadastro = Cadastro(root, None)
     root.mainloop()
