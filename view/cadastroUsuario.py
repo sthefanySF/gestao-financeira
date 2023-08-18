@@ -31,7 +31,7 @@ class Cadastro:
         self._janela = master
         self._janela.title('Gestão Fácil/Cadastro')
         self._janela.geometry('800x500')
-        self._photo = photo  # Use the passed image
+        self._photo = photo  
 
 
         self._parte_verde = tk.Label(self._janela, background='#33bc7d')
@@ -73,6 +73,6 @@ class Cadastro:
         self._janela.mainloop()
 
 if __name__ == "__main__":
-    root = ttk.Window(theme='litera')
+    root = ttk.Window()
     cadastro = Cadastro(root, None)
     root.mainloop()

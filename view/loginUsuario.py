@@ -16,13 +16,11 @@ class Login:
     
    
     def entrar(self):
-        self._janela.withdraw()  # Esconder a janela atual
         tela_inicial_toplevel = tk.Toplevel(self._janela)
         tela_inicial = TelaInicial(tela_inicial_toplevel)
         
         
     def abrir_cadastrar(self):
-        self._janela.withdraw()  # Esconder a janela atual
         cadastro_toplevel = tk.Toplevel(self._janela)
         cadastro_window = Cadastro(cadastro_toplevel, self._photo)
 
@@ -41,7 +39,7 @@ class Login:
         image = Image.open(r"C:\Users\sthef\OneDrive\Documentos\GitHub\gestao-financeira\logo (4).png")
         self._photo = ImageTk.PhotoImage(image)
         self._image_label = tk.Label(self._parte_verde, image=self._photo, bg='#33bc7d', width=450)
-        self._image_label.image = self._photo  # Mantenha a referência à imagem
+        self._image_label.image = self._photo
         self._image_label.pack()
 
         self._parte_verde.grid(row=0, column=0, rowspan=4, sticky="w")
