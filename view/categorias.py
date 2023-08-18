@@ -25,8 +25,14 @@ class Categorias:
         self.scroll.pack(side="right", fill="y")
         self.table.configure(yscrollcommand=self.scroll.set)
 
-        self.criar_nova_categoria_botao = ttk.Button(self.content_frame, text="Criar nova categoria", width=30, bootstyle="success", command=self.criar_nova_categoria)
-        self.criar_nova_categoria_botao.pack(side="bottom")
+        self.frame_botoes = ttk.Frame(self.content_frame)
+        self.frame_botoes.pack(side="bottom", pady=10)
+
+        self.criar_nova_categoria_botao = ttk.Button(self.frame_botoes, text="Criar nova categoria", width=30, bootstyle="success", command=self.criar_nova_categoria)
+        self.criar_nova_categoria_botao.pack(side="left", padx=5)
+
+        self.voltar_botao = ttk.Button(self.frame_botoes, text="Voltar", width=30, bootstyle="success", command=self._janela.destroy)
+        self.voltar_botao.pack(side="left", padx=5)
 
         self.adicionar_categorias_iniciais()
 
