@@ -59,7 +59,7 @@ class Cadastro:
         self._btn_cadastrar = ttk.Button(self._frame_cadastro, text='Cadastrar', width=20, bootstyle="success-outline")
         self._btn_cadastrar.grid(row=7, column=3, pady=10)
 
-        self._btn_voltar = ttk.Button(self._frame_cadastro, text='Voltar', width=20, bootstyle="success-outline", command=self.voltar)
+        self._btn_voltar = ttk.Button(self._frame_cadastro, text='Voltar', width=15, bootstyle="success-outline", command=self.voltar)
         self._btn_voltar.grid(row=8, column=3, pady=10)
         
         # Configuração das colunas e linhas do grid

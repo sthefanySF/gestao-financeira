@@ -64,6 +64,6 @@ class PerfilUsuario:
         pass
 
 if __name__ == "__main__":
-    root = ttk.Window() 
+    root = ttk.Window(theme='litera') 
     perfil = PerfilUsuario(root)
     root.mainloop()
