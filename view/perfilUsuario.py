@@ -46,7 +46,10 @@ class PerfilUsuario:
         meus_dados_window = MeusDados(meus_dados_toplevel)
 
     def abrir_categoria(self):
-        pass
+        from categorias import Categorias
+
+        Categorias_toplevel = tk.Toplevel(self._janela)
+        categorias_window = Categorias(Categorias_toplevel)
 
     def abrir_seguranca(self):
         pass
@@ -63,7 +66,4 @@ class PerfilUsuario:
     def voltar(self):
         pass
 
-if __name__ == "__main__":
-    root = ttk.Window(theme='litera') 
-    perfil = PerfilUsuario(root)
-    root.mainloop()
+

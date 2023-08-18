@@ -48,7 +48,3 @@ class TelaInicial:
         perfil_window = PerfilUsuario(self._janela)
         
         
-if __name__ == "__main__":
-    root = ttk.Window(theme='litera')
-    tela_inicial = TelaInicial(root)
-    root.mainloop()

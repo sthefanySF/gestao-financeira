@@ -45,7 +45,4 @@ class MeusDados:
         self._janela.destroy()  # Fecha a janela atual
 
 
-if __name__ == "__main__":
-    root = ttk.Window()
-    app = MeusDados(root)
-    root.mainloop()
+
