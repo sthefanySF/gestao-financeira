@@ -1,4 +1,10 @@
 import sqlite3
+import sys
+
+
+sys.path.insert(0, './')
+sys.path.insert(0, './models')
+from models.conexao import Conexao
 
 class Transacao:
     def __init__(self, id_usuario, valor, descricao, categoria, data):
@@ -10,18 +16,12 @@ class Transacao:
         self.salvar_no_banco()
 
     def salvar_no_banco(self):
-        # Conectar ao banco de dados
-        conexao = sqlite3.connect('gestao_financeira.db')
-        cursor = conexao.cursor()
-
-        # Inserir a transação na tabela de transações
-        cursor.execute('''
+        Conexao.salvar_no_banco('''
             INSERT INTO transacoes (id_usuario, valor, descricao, categoria, data)
             VALUES (?, ?, ?, ?, ?)
         ''', (self.id_usuario, self.valor, self.descricao, self.categoria, self.data))
-
-        # Salvar as mudanças e fechar a conexão
-        conexao.commit()
-        conexao.close()
-
-        print("Transação registrada com sucesso!")
+   
+    @staticmethod
+    def retornar_todos():
+        usuarios = Conexao.retornar_todos('SELECT * FROM transacoes')
+        return usuarios

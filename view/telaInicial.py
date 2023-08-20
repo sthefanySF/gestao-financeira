@@ -6,6 +6,7 @@ import webbrowser
 
 from perfilUsuario import PerfilUsuario
 from registrarTransacao import RegistrarTransacoes
+from extratos import Extratos
 
 class TelaInicial:
     def __init__(self,master,usuario):
@@ -26,7 +27,7 @@ class TelaInicial:
         self._btn_regis = ttk.Button(frame_menu, text='Registrar Transação', width=20, bootstyle="success", command=self.abrir_transacoes)
         self._btn_regis.grid(row=2, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
-        self._btn_extrato = ttk.Button(frame_menu, text='Extrato', width=20, bootstyle="success")
+        self._btn_extrato = ttk.Button(frame_menu, text='Extrato', width=20, bootstyle="success",command= self.abrir_extratro)
         self._btn_extrato.grid(row=3, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
         self._btn_contas = ttk.Button(frame_menu, text='Minhas contas', width=20, bootstyle="success")
@@ -48,6 +49,8 @@ class TelaInicial:
         
     def abrir_perfil(self):
         perfil_window = PerfilUsuario(self._janela)
+    def abrir_extratro(self):
+        extrato_window = Extratos(self._janela,self._id_usuario_atual)
         
     
     def abrir_transacoes(self):

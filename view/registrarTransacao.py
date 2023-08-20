@@ -1,5 +1,6 @@
 from datetime import datetime
 import tkinter as tk
+from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
@@ -8,9 +9,9 @@ import sys
 
 
 sys.path.insert(0, './')
-sys.path.insert(0, './models')
+sys.path.insert(0, './controller')
 
-from models.transacoes import Transacao
+from controller.transacoes import Transacao
 
 class RegistrarTransacoes:
     def __init__(self, master,id):
@@ -96,6 +97,8 @@ class RegistrarTransacoes:
         data = self._data.grab_current()
         print(data)
         nova_transacoes = Transacao(self._id_usuario_atual,valor,descricao,categoria,data)
+        messagebox.showinfo('Sucesso','Sua transação foi salva com sucesso!')
+        self.voltar()
 
 if __name__ == "__main__":
     root = ttk.Window()  # Escolha um tema do ttkbootstrap

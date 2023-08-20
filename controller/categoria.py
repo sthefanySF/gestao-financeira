@@ -1,0 +1,1 @@
+# por codigo para tabela de categorias

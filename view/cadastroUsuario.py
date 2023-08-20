@@ -8,9 +8,9 @@ import sys
 
 
 sys.path.insert(0, './')
-sys.path.insert(0, './models')
+sys.path.insert(0, './controller')
 
-from models.usuario import Usuario
+from controller.usuario import Usuario
 
 
 

@@ -1,34 +1,25 @@
 import sqlite3
 
-class Usuario:
-    def __init__(self, nome, email, senha):
-        self._nome = nome
-        self._email = email
-        self._senha = senha
-        self.salvar_no_banco()
+
+class Conexao:
     
-    def salvar_no_banco(self):
-        # Conectar ao banco de dados (ou criar se não existir)
+    def salvar_no_banco(self,sql):
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
 
-        # Inserir um novo usuário na tabela
-        cursor.execute('''
-            INSERT INTO usuarios (nome, email, senha)
-            VALUES (?, ?, ?)
-        ''', (self._nome, self._email, self._senha))
+        cursor.execute(sql)
 
         # Salvar as mudanças e fechar a conexão
         conexao.commit()
         conexao.close()
     
     @staticmethod
-    def retornar_todos():
+    def retornar_todos(sql):
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
 
         # Selecionar todos os usuários da tabela
-        cursor.execute('SELECT * FROM usuarios')
+        cursor.execute(sql)
         usuarios = cursor.fetchall()
 
         # Fechar a conexão
@@ -37,30 +28,23 @@ class Usuario:
         return usuarios
     
     @staticmethod
-    def deletar(id_usuario):
+    def deletar(sql):
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
 
         # Deletar um usuário da tabela por ID
-        cursor.execute('DELETE FROM usuarios WHERE id = ?', (id_usuario,))
+        cursor.execute(sql)
 
         # Salvar as mudanças e fechar a conexão
         conexao.commit()
         conexao.close()
 
     @staticmethod
-    def atualizar(id_usuario, nome, email, senha):
+    def atualizar(sql):
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
+        cursor.execute(sql)
 
-        # Atualizar um usuário da tabela por ID
-        cursor.execute('''
-            UPDATE usuarios
-            SET nome = ?, email = ?, senha = ?
-            WHERE id = ?
-        ''', (nome, email, senha, id_usuario))
-
-        # Salvar as mudanças e fechar a conexão
         conexao.commit()
         conexao.close()
    
@@ -77,6 +61,6 @@ class Usuario:
         conexao.close()
 
         if usuario and usuario[3] == senha:
-            return usuario[0]
+            return usuario[0]#retorando o id do usuario encontrado
         else:
             return False
