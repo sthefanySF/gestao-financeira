@@ -1,11 +1,20 @@
+from datetime import datetime
 import tkinter as tk
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
 from perfilUsuario import PerfilUsuario
+import sys
+
+
+sys.path.insert(0, './')
+sys.path.insert(0, './models')
+
+from models.transacoes import Transacao
 
 class RegistrarTransacoes:
-    def __init__(self, master):
+    def __init__(self, master,id):
+        self._id_usuario_atual = id
         self._janela = master
         self._janela.title('Gestão Fácil/Registrar transações')
         self._janela.geometry('850x500')
@@ -64,8 +73,13 @@ class RegistrarTransacoes:
         self._combo_categoria.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
 
         ttk.Label(self._frame_gastos, text="Data").grid(row=3, column=0, padx=10, pady=5)
-        self._datepicker_data = ttk.DateEntry(self._frame_gastos)
-        self._datepicker_data.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
+
+        self._data_var = tk.StringVar()  # Variável de controle para o DateEntry
+
+        self._data = ttk.DateEntry(self._frame_gastos)
+        self._data.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
+
+    
 
         ttk.Button(self._frame_gastos, text="Registrar Transação", command=self.registrar_transacao).grid(row=4, columnspan=2, padx=10, pady=10, sticky="ew")
 
@@ -79,13 +93,9 @@ class RegistrarTransacoes:
         valor = self._entry_valor.get()
         descricao = self._text_descricao.get("1.0", "end-1c")
         categoria = self._combo_categoria.get()
-        data = self._datepicker_data.get()
-
-        # Aqui você pode implementar a lógica para registrar a transação
-        print("Valor:", valor)
-        print("Descrição:", descricao)
-        print("Categoria:", categoria)
-        print("Data:", data)
+        data = self._data.grab_current()
+        print(data)
+        nova_transacoes = Transacao(self._id_usuario_atual,valor,descricao,categoria,data)
 
 if __name__ == "__main__":
     root = ttk.Window()  # Escolha um tema do ttkbootstrap

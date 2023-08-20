@@ -8,7 +8,8 @@ from perfilUsuario import PerfilUsuario
 from registrarTransacao import RegistrarTransacoes
 
 class TelaInicial:
-    def __init__(self,master):
+    def __init__(self,master,usuario):
+        self._id_usuario_atual = usuario
         self._janela = master
         self._janela.title('Gestão Fácil/Tela inicial')
         self._janela.geometry('850x500')
@@ -51,7 +52,7 @@ class TelaInicial:
     
     def abrir_transacoes(self):
         self._janela_transacoes = tk.Toplevel(self._janela)
-        transacao = RegistrarTransacoes(self._janela_transacoes)
+        transacao = RegistrarTransacoes(self._janela_transacoes, self._id_usuario_atual)
         
     def voltar(self):
         self._janela.destroy()
