@@ -6,7 +6,7 @@ import webbrowser
 
 from perfilUsuario import PerfilUsuario
 from registrarTransacao import RegistrarTransacoes
-from extratos import Extratos
+#from extratos import Extratos
 
 class TelaInicial:
     def __init__(self,master,usuario):
