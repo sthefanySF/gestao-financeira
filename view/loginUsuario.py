@@ -5,14 +5,13 @@ from ttkbootstrap.constants import *
 from PIL import Image, ImageTk
 import webbrowser
 
-from telaInicial import TelaInicial
-from cadastroUsuario import Cadastro
-from perfilUsuario import PerfilUsuario
 import sys
-
 sys.path.insert(0, './')
 sys.path.insert(0, './controller')
 
+from telaInicial import TelaInicial
+from cadastroUsuario import Cadastro
+from perfilUsuario import PerfilUsuario
 from controller.usuario import Usuario
 
 
@@ -54,7 +53,7 @@ class Login:
 
         self._parte_verde = tk.Label(self._janela, background='#33bc7d')
 
-        image = Image.open(r"C:\Users\sthef\OneDrive\Documentos\GitHub\gestao-financeira\logo (4).png")
+        image = Image.open(r"logo (4).png")
         self._photo = ImageTk.PhotoImage(image)
         self._image_label = tk.Label(self._parte_verde, image=self._photo, bg='#33bc7d', width=450)
         self._image_label.image = self._photo

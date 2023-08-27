@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+from controller.registrarGanho import RegistrarGanho
 
 from perfilUsuario import PerfilUsuario
 import sys
@@ -14,6 +15,7 @@ sys.path.insert(0, './controller')
 
 class RegistrarTransacoes:
     def __init__(self, master, id_usuario_atual):
+        self._id_usuario_atual = id_usuario_atual
         self._janela = master
         self._janela.title('Gestão Fácil/Registrar transações')
         self._janela.geometry('850x500')
@@ -56,14 +58,14 @@ class RegistrarTransacoes:
         self._entry_ganho_mensal.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
         
         ttk.Label(self._frame_ganhos, text="Ganho adicional:").grid(row=2, column=0, padx=10, pady=5, sticky="w")
-        self._entry_ganho_mensal = ttk.Entry(self._frame_ganhos)
-        self._entry_ganho_mensal.grid(row=3, column=0, padx=10, pady=5, sticky="ew")
+        self._entry_ganho_adicional = ttk.Entry(self._frame_ganhos)
+        self._entry_ganho_adicional.grid(row=3, column=0, padx=10, pady=5, sticky="ew")
         
         ttk.Label(self._frame_ganhos, text="Descrição do ganho adicional:").grid(row=4, column=0, padx=10, pady=5, sticky="w")
-        self._text_descricao = tk.Text(self._frame_ganhos, height=4, width=30)
-        self._text_descricao.grid(row=5, column=0, padx=10, pady=5, sticky="ew")
+        self._text_descricao_ganhos = tk.Text(self._frame_ganhos, height=4, width=30)
+        self._text_descricao_ganhos.grid(row=5, column=0, padx=10, pady=5, sticky="ew")
         
-        ttk.Button(self._frame_ganhos, text="Registrar Ganho", bootstyle="success-outline").grid(row=8, column=0, padx=10, pady=10, sticky="ew")
+        ttk.Button(self._frame_ganhos, text="Registrar Ganho", bootstyle="success-outline",command=self.registar_ganho).grid(row=8, column=0, padx=10, pady=10, sticky="ew")
 
         # LabelFrame de Registrar gastos
         self._frame_gastos = ttk.LabelFrame(self._frame_principal, text="Registrar gastos")
@@ -87,25 +89,24 @@ class RegistrarTransacoes:
         self._datepicker_data = ttk.DateEntry(self._frame_gastos)
         self._datepicker_data.grid(row=7, column=0, padx=10, pady=5, sticky="ew")
 
-        ttk.Button(self._frame_gastos, text="Registrar Gasto",bootstyle="success-outline", command=self.registrar_transacao).grid(row=8, column=0, padx=10, pady=10, sticky="ew")
+        ttk.Button(self._frame_gastos, text="Registrar Gasto",bootstyle="success-outline", command=self.registrar_gasto).grid(row=8, column=0, padx=10, pady=10, sticky="ew")
     def abrir_perfil(self):
         perfil_window = PerfilUsuario(self._janela)
         
     def voltar(self):
         self._janela.destroy()
 
-    def registrar_transacao(self):
-        valor = self._entry_valor.get()
-        descricao = self._text_descricao.get("1.0", "end-1c")
-        categoria = self._combo_categoria.get()
-        data = self._datepicker_data.get()
-
-        # Aqui você pode implementar a lógica para registrar a transação
-        print("Valor:", valor)
-        print("Descrição:", descricao)
-        print("Categoria:", categoria)
-        print("Data:", data)
-
+    def registar_ganho(self):
+        ganho_mensal = self._entry_ganho_mensal.get()
+        ganho_adicional = self._entry_ganho_adicional.get()
+        descricao = self._text_descricao_ganhos.get('1.0', 'end')
+      
+        novo_ganho = RegistrarGanho(self._id_usuario_atual,ganho_mensal,ganho_adicional,descricao)
+        self.voltar
+        return messagebox.showinfo("Registro de ganho","Ganho registrado com sucesso!")
+    
+    def registrar_gasto(self):
+        pass
 if __name__ == "__main__":
     root = ttk.Window()  # Escolha um tema do ttkbootstrap
     login = RegistrarTransacoes(root)
