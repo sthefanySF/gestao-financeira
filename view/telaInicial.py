@@ -6,6 +6,7 @@ import webbrowser
 
 from perfilUsuario import PerfilUsuario
 from registrarTransacao import RegistrarTransacoes
+from extratos import Extratos
 #from extratos import Extratos
 
 class TelaInicial:
@@ -50,7 +51,9 @@ class TelaInicial:
     def abrir_perfil(self):
         perfil_window = PerfilUsuario(self._janela)
     def abrir_extratro(self):
-        extrato_window = Extratos(self._janela,self._id_usuario_atual)
+        self._janela_Extrato = tk.Toplevel(self._janela)
+
+        extrato_window = Extratos(self._janela_Extrato)
         
     
     def abrir_transacoes(self):
