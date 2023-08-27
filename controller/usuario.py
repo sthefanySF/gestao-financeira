@@ -15,12 +15,11 @@ class Usuario:
         self._senha = senha
         self.salvar_no_banco()
     
+    
     def salvar_no_banco(self):
-        Conexao.salvar_no_banco(
-        '''
-            INSERT INTO usuarios (nome, email, senha)
-            VALUES (?, ?, ?)
-        ''', (self._nome, self._email, self._senha))
+        sql = f'INSERT INTO usuarios  VALUES (NULL,"{self._nome}","{self._email}","{self._senha}")'
+        cone = Conexao()
+        cone.salvar_no_banco(sql)
     
     @staticmethod
     def retornar_todos():

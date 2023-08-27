@@ -44,6 +44,7 @@ class TelaInicial:
         self._mtr1.grid(row=1, column=4, rowspan=4, sticky='e', padx=20)
 
         self._mtr2 = ttk.Meter(self._janela, subtext='Gastos', bootstyle='danger', interactive=False, amountused=20)
+    
         self._mtr2.grid(row=1, column=5, rowspan=4, sticky='e', padx=20)
         
         
