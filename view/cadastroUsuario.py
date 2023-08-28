@@ -50,11 +50,7 @@ class Cadastro:
 
         self._parte_verde = tk.Label(self._janela, background='#33bc7d')
 
-<<<<<<< HEAD
-        image = Image.open(r"C:\Users\sthef\OneDrive\Documentos\GitHub\gestao-financeira\logo (4).png")
-=======
         image = Image.open(r"logo (4).png")
->>>>>>> 8ddaa81e91e0702f6f0f71ecb92f49869de96756
         photo = ImageTk.PhotoImage(image)
         self._image_label = tk.Label(self._parte_verde, image=photo, bg='#33bc7d', width=450)
         self._image_label.image = photo  # Mantenha a referência à imagem

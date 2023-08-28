@@ -50,7 +50,7 @@ class TelaInicial:
         
         
     def abrir_perfil(self):
-        perfil_window = PerfilUsuario(self._janela)
+        perfil_window = PerfilUsuario(self._janela, self._id_usuario_atual)
     def abrir_extratro(self):
         self._janela_Extrato = tk.Toplevel(self._janela)
 
