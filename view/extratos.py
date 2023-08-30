@@ -1,8 +1,10 @@
 import tkinter as tk
+from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
 import sys
+
 
 sys.path.insert(0, './')
 sys.path.insert(0, './controller')
@@ -10,6 +12,8 @@ from controller import usuario
 from controller.usuario import Usuario
 from perfilUsuario import PerfilUsuario
 from registrarTransacao import RegistrarTransacoes
+
+from controller.registrarGanho import RegistrarGanho
 
 class Extratos:
     def __init__(self, master):
@@ -91,6 +95,7 @@ class Extratos:
         self._tabela_ganhos.heading('Ganho Adicional', text='Ganho Adicional', anchor=W)
         self._tabela_ganhos.heading('Descrição do Ganho Adicional', text='Descrição do Ganho Adicional', anchor=W)
 
+
         # Scrollbar para a tabela de ganhos
         self._scrollbar_ganhos = ttk.Scrollbar(self._lbl_ganhos, orient='vertical', command=self._tabela_ganhos.yview)
         self._tabela_ganhos.configure(yscrollcommand=self._scrollbar_ganhos.set)
@@ -102,6 +107,7 @@ class Extratos:
         
         self._lbl_ganhos.grid_rowconfigure(0, weight=1)
         self._lbl_ganhos.grid_columnconfigure(0, weight=1)
+        self.atualizar_tabela_ganhos()  # Chame este método para carregar os ganhos na inicialização
 
         #LabelFrame para Gastos
         self._lbl_gastos = ttk.LabelFrame(frame_menu_tabela, text='Gastos', bootstyle="danger", width=400, height=200)
@@ -149,6 +155,30 @@ class Extratos:
         
     def voltar(self):
         self._janela.destroy()
+
+    def registar_ganho(self):
+        ganho_mensal = self._entry_ganho_mensal.get()
+        ganho_adicional = self._entry_ganho_adicional.get()
+        descricao = self._text_descricao_ganhos.get('1.0', 'end')
+      
+        novo_ganho = RegistrarGanho(self._id_usuario_atual, ganho_mensal, ganho_adicional, descricao)
+        
+        # Após inserir um novo ganho, atualize a tabela de ganhos
+        self.atualizar_tabela_ganhos()
+        
+        return messagebox.showinfo("Registro de ganho", "Ganho registrado com sucesso!")
+
+    def atualizar_tabela_ganhos(self):
+        # Limpe os itens existentes na tabela
+        for item in self._tabela_ganhos.get_children():
+            self._tabela_ganhos.delete(item)
+        
+        # Obtenha todos os ganhos do banco de dados
+        ganhos = RegistrarGanho.retornar_todos()
+        
+        # Insira os ganhos na tabela
+        for ganho in ganhos:
+            self._tabela_ganhos.insert('', 'end', values=ganho[2:])  # Ignora o primeiro valor (ID)
 
 if __name__ == "__main__":
     root = ttk.Window(themename='litera')

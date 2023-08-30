@@ -13,7 +13,7 @@ class RegistrarGanho:
             INSERT INTO ganhos (id_usuario, ganho_mensal, ganho_adicional, descricao_adicional)
             VALUES ("{self.id_usuario}","{self.ganho_mensal}","{self.ganho_adicional}", "{self.descricao_adicional}")
         '''
-        Conexao.salvar_no_banco(sql)
+        Conexao.salvar_no_banco(self, sql)
         
 
     @classmethod
