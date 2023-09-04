@@ -26,6 +26,17 @@ class Conexao:
         conexao.close()
         
         return usuarios
+    @staticmethod
+    def retornar_usuario(sql):
+        conexao = sqlite3.connect('gestao_financeira.db')
+        cursor = conexao.cursor()
+
+        cursor.execute(sql)
+        usuarios = cursor.fetchall()
+
+        conexao.close()
+        
+        return usuarios
     
     @staticmethod
     def deletar(sql):

@@ -16,7 +16,7 @@ from registrarTransacao import RegistrarTransacoes
 from controller.registrarGanho import RegistrarGanho
 
 class Extratos:
-    def __init__(self, master):
+    def __init__(self, master,usuario):
         self._id_usuario_atual = usuario
         self._janela = master
         self._janela.title('Gestão Fácil/Extratos')
@@ -174,7 +174,7 @@ class Extratos:
             self._tabela_ganhos.delete(item)
         
         # Obtenha todos os ganhos do banco de dados
-        ganhos = RegistrarGanho.retornar_todos()
+        ganhos = RegistrarGanho.retornar_unico_usuario(self._id_usuario_atual)
         
         # Insira os ganhos na tabela
         for ganho in ganhos:

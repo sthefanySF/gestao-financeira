@@ -54,7 +54,7 @@ class TelaInicial:
     def abrir_extratro(self):
         self._janela_Extrato = tk.Toplevel(self._janela)
 
-        extrato_window = Extratos(self._janela_Extrato)
+        extrato_window = Extratos(self._janela_Extrato,self._id_usuario_atual)
         
     
     def abrir_transacoes(self):
