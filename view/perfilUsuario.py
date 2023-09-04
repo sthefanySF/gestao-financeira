@@ -2,6 +2,12 @@ import sqlite3
 import tkinter as tk
 import ttkbootstrap as ttk
 from PIL import Image, ImageTk
+import sys
+
+
+sys.path.insert(0, './')
+sys.path.insert(0, './controller')
+from controller.usuario import Usuario
 
 
 
@@ -25,7 +31,7 @@ class PerfilUsuario:
         self._lbl_nome_usuario.grid(row=0, column=0, columnspan=2, pady=20)
         
 
-        self._btn_meus_dados = ttk.Button(self._frame_central, text='Meus Dados', width=30,  bootstyle="success-outline", command=self.abrir_meus_dados)
+        self._btn_meus_dados = ttk.Button(self._frame_central, text='Meus Dados', width=30,  bootstyle="success-outline", command=lambda: self.abrir_meus_dados(id_usuario_logado))
         self._btn_meus_dados.grid(row=1, column=0, columnspan=2, pady=10) 
 
         self._btn_categoria = ttk.Button(self._frame_central, text='Categoria',width=30,  bootstyle="success-outline", command=self.abrir_categoria)
@@ -45,14 +51,34 @@ class PerfilUsuario:
 
         self._janela.mainloop()
 
-    def abrir_meus_dados(self):
+    def abrir_meus_dados(self, id_usuario_logado):
         from dadosUsuario import MeusDados
 
-        meus_dados_toplevel = tk.Toplevel(self._janela)
-        meus_dados_window = MeusDados(meus_dados_toplevel)
+        # Crie uma instância de Usuario com base no id_usuario_logado
+        usuario_logado = Usuario.obter_usuario_por_id(id_usuario_logado)
 
+        meus_dados_toplevel = tk.Toplevel(self._janela)
+        meus_dados_window = MeusDados(meus_dados_toplevel, usuario_logado)
+
+
+    def obter_nome_usuario_logado(self, id_usuario_logado):
+        # Conecte-se ao banco de dados e execute a consulta
+        sql = "SELECT nome FROM usuarios WHERE id = ?"
+        conexao = sqlite3.connect('gestao_financeira.db')
+        cursor = conexao.cursor()
+        cursor.execute(sql, (id_usuario_logado,))
+        
+        # Obtenha o nome do usuário logado
+        nome_usuario = cursor.fetchone()[0]  # Assumindo que a primeira coluna é o nome
+
+        # Feche a conexão com o banco de dados
+        conexao.close()
+    
+        return nome_usuario
+    
     def abrir_categoria(self):
         from categorias import Categorias
+
 
         Categorias_toplevel = tk.Toplevel(self._janela)
         categorias_window = Categorias(Categorias_toplevel)
