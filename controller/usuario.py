@@ -46,3 +46,16 @@ class Usuario:
     def autenticar(cls, email, senha):
         resposta = Conexao.autenticar(email,senha)
         return resposta
+    
+    @classmethod
+    def obter_usuario_por_id(cls, id_usuario):
+        # Consulta SQL para obter um usuário por ID
+        sql = "SELECT nome, email, senha FROM usuarios WHERE id = ?"
+        conexao = Conexao()
+        resultado = conexao.retornar_usuario(sql, (id_usuario,))
+        
+        if resultado:
+            nome, email, senha = resultado
+            return cls(nome, email, senha)  # Retorna uma instância de Usuario com os dados encontrados
+        else:
+            return None  # Retorna None se o usuário não for encontrado
