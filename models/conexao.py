@@ -38,6 +38,19 @@ class Conexao:
 
         return usuarios
     
+
+    @staticmethod
+    def retornar_um(sql, parametros):
+        conexao = sqlite3.connect('gestao_financeira.db')
+        cursor = conexao.cursor()
+
+        cursor.execute(sql, parametros)
+        resultado = cursor.fetchone()
+
+        conexao.close()
+
+        return resultado
+    
     
     
     @staticmethod

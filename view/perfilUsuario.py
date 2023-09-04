@@ -7,7 +7,8 @@ import sys
 
 sys.path.insert(0, './')
 sys.path.insert(0, './controller')
-from controller.usuario import Usuario
+from controller import usuario
+
 
 
 
@@ -55,26 +56,11 @@ class PerfilUsuario:
         from dadosUsuario import MeusDados
 
         # Crie uma instância de Usuario com base no id_usuario_logado
-        usuario_logado = Usuario.obter_usuario_por_id(id_usuario_logado)
+        usuario_logado = usuario.Usuario.obter_usuario_por_id(id_usuario_logado)
 
         meus_dados_toplevel = tk.Toplevel(self._janela)
         meus_dados_window = MeusDados(meus_dados_toplevel, usuario_logado)
 
-
-    def obter_nome_usuario_logado(self, id_usuario_logado):
-        # Conecte-se ao banco de dados e execute a consulta
-        sql = "SELECT nome FROM usuarios WHERE id = ?"
-        conexao = sqlite3.connect('gestao_financeira.db')
-        cursor = conexao.cursor()
-        cursor.execute(sql, (id_usuario_logado,))
-        
-        # Obtenha o nome do usuário logado
-        nome_usuario = cursor.fetchone()[0]  # Assumindo que a primeira coluna é o nome
-
-        # Feche a conexão com o banco de dados
-        conexao.close()
-    
-        return nome_usuario
     
     def abrir_categoria(self):
         from categorias import Categorias

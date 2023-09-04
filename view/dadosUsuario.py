@@ -1,10 +1,14 @@
 import tkinter as tk
 import ttkbootstrap as ttk
+import sys
+sys.path.insert(0, './')
+sys.path.insert(0, './controller')
+from controller import usuario
 
 class MeusDados:
-    def __init__(self, master, usuario):
+    def __init__(self, master, usuario_logado):
         self._janela = master
-        self.usuario = usuario
+        self.usuario = usuario_logado
         self._janela.title('Gestão Fácil/Dados do Usuário')
         self._janela.geometry('800x500')
 
@@ -34,7 +38,7 @@ class MeusDados:
 
     def preencher_campos(self):
         # Preencha os campos Entry com os dados do usuário
-        self.nome_entry.insert(0, self.usuario._nome)
+        self.nome_entry.insert(0, self.usuario._nome)  # Use _nome aqui
         self.email_entry.insert(0, self.usuario._email)
 
     def atualizar_informacoes(self):
@@ -43,7 +47,7 @@ class MeusDados:
 
         if novo_nome and novo_email:
             # Atualize as informações no banco de dados
-            self.usuario.atualizar(novo_nome, novo_email, self.usuario._senha)
+            self.usuario.atualizar(novo_nome, novo_email, self.usuario.senha)
             print("Informações atualizadas:")
             print("Nome:", novo_nome)
             print("E-mail:", novo_email)
@@ -52,3 +56,10 @@ class MeusDados:
             
     def voltar(self):
         self._janela.destroy()  # Fecha a janela atual
+
+if __name__ == "__main__":
+    root = ttk.Window(themename='litera')
+    id_usuario_logado = 1  # Substitua pelo ID do usuário logado
+    usuario_logado = usuario.obter_usuario_por_id(id_usuario_logado)  # Obtenha o usuário logado
+    janela_meus_dados = MeusDados(root, usuario_logado)  # Crie a janela MeusDados com o usuário logado
+    root.mainloop()

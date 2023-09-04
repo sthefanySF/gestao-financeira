@@ -52,7 +52,8 @@ class Usuario:
         # Consulta SQL para obter um usuário por ID
         sql = "SELECT nome, email, senha FROM usuarios WHERE id = ?"
         conexao = Conexao()
-        resultado = conexao.retornar_usuario(sql, (id_usuario,))
+        resultado = conexao.retornar_um(sql, (id_usuario,))
+
         
         if resultado:
             nome, email, senha = resultado
