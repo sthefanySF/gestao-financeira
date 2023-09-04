@@ -27,16 +27,16 @@ class Conexao:
         
         return usuarios
     @staticmethod
-    def retornar_usuario(sql, parametros):
+    def retornar_usuario(sql):
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
 
-        cursor.execute(sql, parametros)
-        resultado = cursor.fetchone()
+        cursor.execute(sql)
+        usuarios = cursor.fetchall()
 
         conexao.close()
 
-        return resultado
+        return usuarios
     
     
     

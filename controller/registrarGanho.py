@@ -20,6 +20,7 @@ class RegistrarGanho:
     def retornar_todos(cls):
         return Conexao.retornar_todos('SELECT * FROM ganhos')
     
+    
     @classmethod
     def retornar_unico_usuario(cls,id_usuario):
         return Conexao.retornar_usuario(f'SELECT * FROM ganhos WHERE id_usuario = {id_usuario};')
