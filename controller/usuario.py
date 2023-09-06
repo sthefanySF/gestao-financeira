@@ -35,13 +35,21 @@ class Usuario:
 
 
     @staticmethod
-    def atualizar(id_usuario, nome, email, senha):
+    def atualizar_nome_email(id_usuario, nome, email):
         Conexao.atualizar('''
             UPDATE usuarios
-            SET nome = ?, email = ?, senha = ?
+            SET nome = ?, email = ?
             WHERE id = ?
-        ''', (nome, email, senha, id_usuario))
-   
+        ''', (nome, email, id_usuario))
+
+    @staticmethod
+    def atualizar_senha(id_usuario, senha):
+        Conexao.atualizar('''
+            UPDATE usuarios
+            SET senha = ?
+            WHERE id = ?
+        ''', (senha, id_usuario))
+
     @classmethod
     def autenticar(cls, email, senha):
         resposta = Conexao.autenticar(email,senha)

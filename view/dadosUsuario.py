@@ -6,9 +6,9 @@ sys.path.insert(0, './controller')
 from controller import usuario
 
 class MeusDados:
-    def __init__(self, master, usuario_logado):
+    def __init__(self, master, id_usuario_logado):
         self._janela = master
-        self.usuario = usuario_logado
+        self.usuario = id_usuario_logado
         self._janela.title('Gestão Fácil/Dados do Usuário')
         self._janela.geometry('800x500')
 
@@ -47,19 +47,14 @@ class MeusDados:
 
         if novo_nome and novo_email:
             # Atualize as informações no banco de dados
-            self.usuario.atualizar(novo_nome, novo_email, self.usuario.senha)
+            self.usuario.atualizar_nome_email(self.id_usuario, novo_nome, novo_email)
             print("Informações atualizadas:")
             print("Nome:", novo_nome)
             print("E-mail:", novo_email)
         else:
             print("Por favor, preencha o nome e o e-mail antes de atualizar.")
+
             
     def voltar(self):
         self._janela.destroy()  # Fecha a janela atual
 
-if __name__ == "__main__":
-    root = ttk.Window(themename='litera')
-    id_usuario_logado = 1  # Substitua pelo ID do usuário logado
-    usuario_logado = usuario.obter_usuario_por_id(id_usuario_logado)  # Obtenha o usuário logado
-    janela_meus_dados = MeusDados(root, usuario_logado)  # Crie a janela MeusDados com o usuário logado
-    root.mainloop()

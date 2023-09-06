@@ -21,6 +21,7 @@ class PerfilUsuario:
         self._janela.title('Gestão Fácil/Meu Perfil')
         self._janela.geometry('800x500')
         nome_usuario = self.obter_nome_usuario_logado(id_usuario_logado)
+        self._id_usuario_logado = id_usuario_logado
         
 
         # Frame central para posicionar os widgets
@@ -44,7 +45,7 @@ class PerfilUsuario:
         self._btn_sair = ttk.Button(self._frame_central, text='Sair da Conta', width=30, bootstyle="success-outline", command=self.sair)
         self._btn_sair.grid(row=4, column=0, columnspan=2, pady=10) 
         
-        self._btn_excluir = ttk.Button(self._frame_central, text='Excluir minha conta', width=30, bootstyle="success-outline")
+        self._btn_excluir = ttk.Button(self._frame_central, text='Excluir minha conta', width=30, bootstyle="success-outline", command=lambda: self.excluir_conta(id_usuario_logado))
         self._btn_excluir.grid(row=5, column=0, columnspan=2, pady=10)
 
         self._btn_voltar = ttk.Button(self._frame_central, text='Voltar', width=30, bootstyle="success-outline", command=self.voltar)
@@ -98,6 +99,30 @@ class PerfilUsuario:
         conexao.close()
     
         return nome_usuario
+    
+    def excluir_conta(self, id_usuario_logado=None):
+        # Abra a conexão com o banco de dados
+        conexao = sqlite3.connect('gestao_financeira.db')
+        cursor = conexao.cursor()
+
+        # Execute a consulta para excluir o usuário
+        sql = "DELETE FROM usuarios WHERE id = ?"
+        cursor.execute(sql, (id_usuario_logado,))
+        
+        # Confirme a operação
+        conexao.commit()
+
+        # Feche a conexão com o banco de dados
+        conexao.close()
+
+        # Feche a janela do perfil do usuário após a exclusão
+        self._janela.destroy()
+
+        # Retorne à tela de login
+        from loginUsuario import Login
+        root = ttk.Window()
+        login = Login(root)
+        root.mainloop()
 
 
 
