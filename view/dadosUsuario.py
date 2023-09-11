@@ -1,6 +1,7 @@
 import tkinter as tk
 import ttkbootstrap as ttk
 import sys
+from conexao import Conexao
 sys.path.insert(0, './')
 sys.path.insert(0, './controller')
 from controller import usuario
@@ -46,13 +47,7 @@ class MeusDados:
         novo_email = self.email_entry.get()
 
         if novo_nome and novo_email:
-            # Atualize as informações no banco de dados
-            self.usuario.atualizar_nome_email(self.id_usuario, novo_nome, novo_email)
-            print("Informações atualizadas:")
-            print("Nome:", novo_nome)
-            print("E-mail:", novo_email)
-        else:
-            print("Por favor, preencha o nome e o e-mail antes de atualizar.")
+            conexao = Conexao
 
             
     def voltar(self):

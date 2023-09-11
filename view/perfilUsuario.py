@@ -7,7 +7,9 @@ import sys
 
 sys.path.insert(0, './')
 sys.path.insert(0, './controller')
+sys.path.insert(0, './models')
 from controller import usuario
+from conexao import Conexao
 
 
 
@@ -102,20 +104,11 @@ class PerfilUsuario:
     
     def excluir_conta(self, id_usuario_logado=None):
         # Abra a conexão com o banco de dados
-        conexao = sqlite3.connect('gestao_financeira.db')
-        cursor = conexao.cursor()
-
-        # Execute a consulta para excluir o usuário
-        sql = "DELETE FROM usuarios WHERE id = ?"
-        cursor.execute(sql, (id_usuario_logado,))
-        
-        # Confirme a operação
-        conexao.commit()
-
-        # Feche a conexão com o banco de dados
-        conexao.close()
-
-        # Feche a janela do perfil do usuário após a exclusão
+        print(id_usuario_logado)
+        conexao =  Conexao
+        sql = f"DELETE FROM usuarios WHERE id = '{id_usuario_logado}';"
+        print(sql)
+        conexao = Conexao.deletar(sql)
         self._janela.destroy()
 
         # Retorne à tela de login
