@@ -6,13 +6,14 @@ from ttkbootstrap.constants import *
 import sys
 
 
+
+
 sys.path.insert(0, './')
 sys.path.insert(0, './controller')
 from controller import usuario
 from controller.usuario import Usuario
 from perfilUsuario import PerfilUsuario
 from registrarTransacao import RegistrarTransacoes
-
 from controller.registrarGanho import RegistrarGanho
 
 class Extratos:
@@ -61,7 +62,7 @@ class Extratos:
         self._btn_perfil = ttk.Button(frame_menu, text='Meu perfil', width=20, bootstyle="success", command=self.abrir_perfil)
         self._btn_perfil.grid(row=0, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
-        self._btn_inicio = ttk.Button(frame_menu, text='Inicio', width=20, bootstyle="success")
+        self._btn_inicio = ttk.Button(frame_menu, text='Inicio', width=20, bootstyle="success", command=self.entrar)
         self._btn_inicio.grid(row=1, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
         self._btn_regis = ttk.Button(frame_menu, text='Registrar Transação', width=20, bootstyle="success", command=self.abrir_transacoes) 
@@ -147,11 +148,17 @@ class Extratos:
         frame_menu_tabela.grid_columnconfigure(0, weight=1)
 
     def abrir_perfil(self):
-        perfil_window = PerfilUsuario(self._janela)
+        perfil_window = PerfilUsuario(self._janela,self._id_usuario_atual)
     
     def abrir_transacoes(self):
         self._janela_transacoes = tk.Toplevel(self._janela)
         transacao = RegistrarTransacoes(self._janela_transacoes, self._id_usuario_atual)
+        
+    def entrar(self):
+        from telaInicial import TelaInicial
+        tela_inicial_toplevel = tk.Toplevel(self._janela)
+        tela_inicial = TelaInicial(tela_inicial_toplevel, self._id_usuario_atual)
+        
         
     def voltar(self):
         self._janela.destroy()
