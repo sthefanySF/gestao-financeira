@@ -21,7 +21,7 @@ class Extratos:
         self._id_usuario_atual = usuario
         self._janela = master
         self._janela.title('Gestão Fácil/Extratos')
-        self._janela.geometry('1030x800')
+        self._janela.geometry('1015x900')
 
         # Frame principal para conter tudo
         frame_principal = ttk.Frame(self._janela)
