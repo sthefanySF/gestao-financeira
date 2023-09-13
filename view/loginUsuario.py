@@ -6,17 +6,22 @@ from PIL import Image, ImageTk
 import webbrowser
 
 import sys
+
+
+
+
 sys.path.insert(0, './')
 sys.path.insert(0, './controller')
-
+sys.path.insert(0, './view')
+from view.recuperarSenha import RecuperarSenha
 from telaInicial import TelaInicial
 from cadastroUsuario import Cadastro
 from perfilUsuario import PerfilUsuario
 from controller.usuario import Usuario
 
 
-def open_link(event):
-    webbrowser.open("https://www.example.com")  # Substitua pelo link real
+
+
     
 
 class Login:
@@ -44,15 +49,20 @@ class Login:
             self._etr_senha.config(show='')
         else:
             self._etr_senha.config(show='*')
-        self._senha_oculta = not self._senha_oculta  
+        self._senha_oculta = not self._senha_oculta 
+
+# Agora você pode chamar esta função quando precisar abrir a janela de recuperação de senha
+# Por exemplo, você pode associar essa função a um botão em outra janela
         
     def abrir_cadastrar(self):
-        cadastro_toplevel = tk.Toplevel(self._janela)
-        cadastro_window = Cadastro(cadastro_toplevel, self._photo)
-
+       recuperar = tk.Toplevel(self._janela)
+       janela = Cadastro(recuperar,self._photo)
+    
+    def abrir_janela_recuperacao_senha(self,event):
+       recuperar = tk.Toplevel(self._janela)
+       recuperar_senha = RecuperarSenha(recuperar)
 
     
-        #self._janela = ttk.Window(themename='litera')
     
     def __init__(self, master):
         self._janela = master
@@ -74,7 +84,7 @@ class Login:
         self._frame_login.grid(row=0, column=1)
 
         self._lbl_logo = ttk.Label(self._frame_login, text='Entre ou crie sua conta')
-        self._lbl_logo.config(font="Arial 10 bold")
+        self._lbl_logo.config(font="Arial 12 bold")
         self._lbl_logo.grid(row=0, column=2, columnspan=4, pady=50)
 
         self._lbl_email = ttk.Label(self._frame_login, text='Email:', width=30).grid(row=1, column=3, sticky="e")
@@ -93,7 +103,7 @@ class Login:
 
         self._link_label = ttk.Label(self._frame_login, text="esqueci a senha", cursor="hand2", font=("Helvetica", 8, "underline"))
         self._link_label.grid(row=5, column=3, sticky="e")  # Centraliza na coluna da direita
-        self._link_label.bind("<Button-1>", open_link)
+        self._link_label.bind("<Button-1>",self.abrir_janela_recuperacao_senha)
 
         self._btn = ttk.Button(self._frame_login, text='Entrar', width=20, bootstyle="success", command=self.entrar)
         self._btn.grid(row=6, column=3, pady=10)

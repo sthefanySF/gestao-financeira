@@ -68,7 +68,7 @@ class PerfilUsuario:
         categorias_window = Categorias(Categorias_toplevel)
 
     def abrir_seguranca(self):
-        from recuperarSenha import SenhaUsuario
+        from senhaUsuario import SenhaUsuario
         recuperar = tk.Toplevel(self._janela)
         janela = SenhaUsuario(recuperar,self._id_usuario_logado)
 

@@ -91,4 +91,4 @@ class Conexao:
             return usuario[0]#retorando o id do usuario encontrado
         else:
             return False
-
+Conexao.deletar("DELETE FROM transacoes;")
