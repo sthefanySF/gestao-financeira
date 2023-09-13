@@ -62,12 +62,14 @@ class TelaInicial:
         # self._lbl_meter = ttk.Label(self._janela, text='Resumo do mês')
         # self._lbl_meter.grid(row=0, column=2, columnspan=2, pady=(margin_menu * 2, 0))
         # self._lbl_meter.config(font="Arial 13 bold")
+    def mostrar_tela_inicial(self):
+        self._janela.deiconify()  # Reexibe a janela da tela inicial
 
     def abrir_perfil(self):
         # Esconda a janela de TelaInicial
-        #self._janela.withdraw()
+        self._janela.withdraw()
 
-        perfil_window = PerfilUsuario(self._janela, self._id_usuario_atual, self._login_window)
+        perfil_window = PerfilUsuario(self._janela, self._id_usuario_atual, self._login_window,self)
     
     def abrir_extratro(self):
         self._janela.withdraw()

@@ -15,15 +15,15 @@ from conexao import Conexao
 class PerfilUsuario:
     _photo = None  # Atributo de classe para manter a referência à imagem
 
-    def __init__(self, master, id_usuario_logado,login_window= None):
+    def __init__(self, master, id_usuario_logado,login_window= None,tela_inicial_window=None):
         self._janela = ttk.Toplevel(master)
         self._janela.title('Gestão Fácil/Meu Perfil')
         self._janela.geometry('800x500')
         self._login_window = login_window  # Mantenha a referência à janela de login
         nome_usuario = self.obter_nome_usuario_logado(id_usuario_logado)
         self._id_usuario_logado = id_usuario_logado
-        self._janelas_abertas = []  # Lista para rastrear as janelas abertas
-        self._janelas_abertas.append(self._janela)  # Adicione a janela principal à lista
+        self._tela_inicial_window = tela_inicial_window  # Referência à janela da tela inicial
+        
         
 
         # Frame central para posicionar os widgets
@@ -77,11 +77,6 @@ class PerfilUsuario:
 
    
     def sair(self):
-        # Feche todas as janelas abertas, exceto a janela de login
-        for janela in self._janelas_abertas:
-            if janela != self._janela:
-                janela.destroy()
-
         # Mostrar a janela de login novamente
         self._janela.destroy()
         self._login_window.mostrar_login()
@@ -89,6 +84,10 @@ class PerfilUsuario:
     def voltar(self):
         self._janela.destroy()
         
+        # Chame a função para mostrar a tela inicial novamente
+        if self._tela_inicial_window:
+            self._tela_inicial_window.mostrar_tela_inicial()
+
     def obter_nome_usuario_logado(self, id_usuario_logado):
         # Conecte-se ao banco de dados e execute a consulta
         sql = "SELECT nome FROM usuarios WHERE id = ?"
@@ -105,11 +104,6 @@ class PerfilUsuario:
         return nome_usuario
     
     def excluir_conta(self, id_usuario_logado=None):
-        # Feche todas as janelas abertas, exceto a janela de login
-        for janela in self._janelas_abertas:
-            if janela != self._janela:
-                janela.destroy()
-
         # Abra a conexão com o banco de dados
         print(id_usuario_logado)
         conexao = Conexao
