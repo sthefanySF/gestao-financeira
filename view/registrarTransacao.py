@@ -43,8 +43,6 @@ class RegistrarTransacoes:
         self._btn_extrato = ttk.Button(frame_menu, text='Extrato', width=20, bootstyle="success", command=self.abrir_extratro)
         self._btn_extrato.grid(row=3, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
-        self._btn_contas = ttk.Button(frame_menu, text='Minhas contas', width=20, bootstyle="success", command=self.abrir_perfil)
-        self._btn_contas.grid(row=4, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
         self._btn_voltar = ttk.Button(frame_menu, text='Voltar', width=20, bootstyle="success", command=self.voltar)
         self._btn_voltar.grid(row=5, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
