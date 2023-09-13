@@ -88,26 +88,32 @@ class Extratos:
         # LabelFrame para Ganhos para a tabela de ganhos
         self._lbl_ganhos = ttk.LabelFrame(frame_menu_tabela, text='Ganhos', bootstyle="success")
         self._lbl_ganhos.grid(row=1, column=0, padx=10, pady=10, sticky='nsew')
-        
+         #LabelFrame para Gastos
+        self._lbl_gastos = ttk.LabelFrame(frame_menu_tabela, text='Gastos', bootstyle="danger", width=400, height=400)
+        self._lbl_gastos.grid(row=2, column=0, padx=10, pady=10, sticky='nsew') 
+
         # Frame para botões de "Editar Ganho" e "Excluir Ganho"
         frame_botoes_ganho = ttk.Frame(self._lbl_ganhos)
         frame_botoes_ganho.grid(row=1, column=0, padx=10, pady=10, sticky='ew')
-        
-         # Criar botões para editar e excluir ganhos
+        # Frame para botões de "Editar Gasto" e "Excluir Gasto"
+        frame_botoes_gasto = ttk.Frame(self._lbl_gastos)
+        frame_botoes_gasto.grid(row=1, column=0, padx=10, pady=10, sticky='ew')
+                
+        # Criar botões para editar e excluir ganhos
         self._btn_editar_ganho = ttk.Button(frame_botoes_ganho, text='Editar Ganho', bootstyle="success-outline", command=self.editar_ganho)
         self._btn_excluir_ganho = ttk.Button(frame_botoes_ganho, text='Excluir Ganho', bootstyle="success-outline", command=self.excluir_ganho)
 
         # Criar botões para editar e excluir gastos
-        self._btn_editar_gasto = ttk.Button(frame_menu_tabela, text='Editar Gasto', bootstyle="success-outline", command=self.editar_gasto)
-        self._btn_excluir_gasto = ttk.Button(frame_menu_tabela, text='Excluir Gasto', bootstyle="success-outline", command=self.excluir_gasto)
+        self._btn_editar_gasto = ttk.Button(frame_botoes_gasto, text='Editar Gasto', bootstyle="success-outline", command=self.editar_gasto)
+        self._btn_excluir_gasto = ttk.Button(frame_botoes_gasto, text='Excluir Gasto', bootstyle="success-outline", command=self.excluir_gasto)
 
         # Posicionamento dos botões "Editar" e "Excluir" para ganhos e gastos usando grid
         self._btn_editar_ganho.grid(row=3, column=1, padx=(20, 10), pady=10, sticky='e')
         self._btn_excluir_ganho.grid(row=3, column=2, padx=(20, 20), pady=10, sticky='w')
         
         
-        self._btn_editar_gasto.grid(row=4, column=0, padx=(20, 10), pady=10, sticky='e')
-        self._btn_excluir_gasto.grid(row=4, column=0, padx=(20, 20), pady=10, sticky='w')
+        self._btn_editar_gasto.grid(row=0, column=0, padx=10, pady=10)  # Defina a linha e a coluna conforme necessário
+        self._btn_excluir_gasto.grid(row=0, column=1, padx=10, pady=10)  # Defina a linha e a coluna conforme necessário
 
 
         
@@ -141,9 +147,6 @@ class Extratos:
         self._lbl_ganhos.grid_columnconfigure(0, weight=1)
         self.atualizar_tabela_ganhos()  # Chame este método para carregar os ganhos na inicialização
 
-        #LabelFrame para Gastos
-        self._lbl_gastos = ttk.LabelFrame(frame_menu_tabela, text='Gastos', bootstyle="danger", width=400, height=400)
-        self._lbl_gastos.grid(row=2, column=0, padx=10, pady=10, sticky='nsew')
 
         # Tabela de Gastos
         self._tabela_gastos = ttk.Treeview(self._lbl_gastos, columns=('Valor do gasto', 'Descrição do gasto', 'Categoria', 'Data'))
@@ -174,7 +177,7 @@ class Extratos:
         self._lbl_gastos.grid_rowconfigure(0, weight=1)
         self._lbl_gastos.grid_columnconfigure(0, weight=1)
 
-    
+        self.atualizar_tabela_gastos() 
         frame_menu_tabela.grid_rowconfigure(0, weight=1)
         frame_menu_tabela.grid_columnconfigure(0, weight=1)
         self.atualizar_tabela_gastos()
