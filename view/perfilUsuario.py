@@ -22,6 +22,8 @@ class PerfilUsuario:
         self._login_window = login_window  # Mantenha a referência à janela de login
         nome_usuario = self.obter_nome_usuario_logado(id_usuario_logado)
         self._id_usuario_logado = id_usuario_logado
+        self._janelas_abertas = []  # Lista para rastrear as janelas abertas
+        self._janelas_abertas.append(self._janela)  # Adicione a janela principal à lista
         
 
         # Frame central para posicionar os widgets
@@ -75,8 +77,14 @@ class PerfilUsuario:
 
    
     def sair(self):
+        # Feche todas as janelas abertas, exceto a janela de login
+        for janela in self._janelas_abertas:
+            if janela != self._janela:
+                janela.destroy()
+
+        # Mostrar a janela de login novamente
         self._janela.destroy()
-        self._login_window.mostrar_login()  # Mostrar a janela de login novamente ao sair
+        self._login_window.mostrar_login()
     
     def voltar(self):
         self._janela.destroy()
@@ -97,14 +105,19 @@ class PerfilUsuario:
         return nome_usuario
     
     def excluir_conta(self, id_usuario_logado=None):
+        # Feche todas as janelas abertas, exceto a janela de login
+        for janela in self._janelas_abertas:
+            if janela != self._janela:
+                janela.destroy()
+
         # Abra a conexão com o banco de dados
         print(id_usuario_logado)
-        conexao =  Conexao
+        conexao = Conexao
         sql = f"DELETE FROM usuarios WHERE id = '{id_usuario_logado}';"
         print(sql)
         conexao = Conexao.deletar(sql)
         self._janela.destroy()
 
-        self._login_window.mostrar_login()  # Mostrar a janela de login novamente ao sair
+        self._login_window.mostrar_login() 
 
 

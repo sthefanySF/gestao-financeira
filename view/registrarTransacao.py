@@ -97,15 +97,18 @@ class RegistrarTransacoes:
         perfil_window = PerfilUsuario(self._janela,self._id_usuario_atual)
     
     def abrir_transacoes(self):
+        self._janela.withdraw()
         self._janela_transacoes = tk.Toplevel(self._janela)
         transacao = RegistrarTransacoes(self._janela_transacoes, self._id_usuario_atual)
         
     def entrar(self):
+        self._janela.withdraw()
         from telaInicial import TelaInicial
         tela_inicial_toplevel = tk.Toplevel(self._janela)
         tela_inicial = TelaInicial(tela_inicial_toplevel, self._id_usuario_atual)
         
     def abrir_extratro(self):
+        self._janela.withdraw()
         from extratos import Extratos
 
         self._janela_Extrato = tk.Toplevel(self._janela)

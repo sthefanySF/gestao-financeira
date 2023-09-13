@@ -70,12 +70,14 @@ class TelaInicial:
         perfil_window = PerfilUsuario(self._janela, self._id_usuario_atual, self._login_window)
     
     def abrir_extratro(self):
+        self._janela.withdraw()
         self._janela_Extrato = tk.Toplevel(self._janela)
 
         extrato_window = Extratos(self._janela_Extrato,self._id_usuario_atual)
         
     
     def abrir_transacoes(self):
+        self._janela.withdraw()
         self._janela_transacoes = tk.Toplevel(self._janela)
         transacao = RegistrarTransacoes(self._janela_transacoes, self._id_usuario_atual)
         
