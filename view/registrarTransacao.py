@@ -25,8 +25,9 @@ class RegistrarTransacoes:
         self._frame_principal = ttk.Frame(self._janela)
         self._frame_principal.grid(row=0, column=0, sticky="nsew")
         self._janela.grid_rowconfigure(0, weight=1)
-        self._janela.grid_columnconfigure(0, weight=1)
-
+        self._janela.grid_columnconfigure(1, weight=1)
+        self._janela.grid_columnconfigure(2, weight=1)
+        
         frame_menu = ttk.Frame(self._frame_principal)
         frame_menu.grid(row=0, column=0, rowspan=2, sticky="ns")
         margin_menu = 10
@@ -43,17 +44,15 @@ class RegistrarTransacoes:
         self._btn_extrato = ttk.Button(frame_menu, text='Extrato', width=20, bootstyle="success", command=self.abrir_extratro)
         self._btn_extrato.grid(row=3, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
-        self._btn_contas = ttk.Button(frame_menu, text='Minhas contas', width=20, bootstyle="success", command=self.abrir_perfil)
-        self._btn_contas.grid(row=4, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
-
         self._btn_voltar = ttk.Button(frame_menu, text='Voltar', width=20, bootstyle="success", command=self.voltar)
         self._btn_voltar.grid(row=5, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
         # LabelFrame de Registrar ganhos
         self._frame_ganhos = ttk.LabelFrame(self._frame_principal, text="Registrar ganhos")
         self._frame_ganhos.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
-        self._frame_ganhos.grid_rowconfigure(0, weight=1)
-        self._frame_ganhos.grid_columnconfigure(0, weight=1)
+        self._frame_ganhos.grid_rowconfigure(1, weight=1)
+        self._frame_ganhos.grid_columnconfigure(0, weight=5)
+        self._frame_ganhos.grid_rowconfigure(2, weight=1)
 
         ttk.Label(self._frame_ganhos, text="Ganho mensal:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
         self._entry_ganho_mensal = ttk.Entry(self._frame_ganhos)
@@ -72,8 +71,9 @@ class RegistrarTransacoes:
         # LabelFrame de Registrar gastos
         self._frame_gastos = ttk.LabelFrame(self._frame_principal, text="Registrar gastos")
         self._frame_gastos.grid(row=0, column=2, sticky="nsew", padx=10, pady=10)
-        self._frame_gastos.grid_rowconfigure(0, weight=1)
+        self._frame_gastos.grid_rowconfigure(1, weight=1)
         self._frame_gastos.grid_columnconfigure(0, weight=1)
+        self._frame_gastos.grid_rowconfigure(2, weight=1)
 
         ttk.Label(self._frame_gastos, text="Valor do gasto:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
         self._entry_valor = ttk.Entry(self._frame_gastos)
