@@ -17,6 +17,7 @@ from controller.usuario import Usuario
 
 def open_link(event):
     webbrowser.open("https://www.example.com")  # Substitua pelo link real
+    
 
 class Login:
     
@@ -30,12 +31,20 @@ class Login:
 
         usuario_autenticado = Usuario.autenticar(email, senha)
 
+
         if usuario_autenticado:
               print(usuario_autenticado)
               tela_inicial_toplevel = tk.Toplevel(self._janela)
               tela_inicial = TelaInicial(tela_inicial_toplevel,usuario_autenticado)
         else:
             messagebox.showwarning('Atençao',"Email ou senha invalidos!")
+    def mostrar(self,event):
+        if self._senha_oculta:
+            self._senha_var.set(self._etr_senha.get())
+            self._etr_senha.config(show='')
+        else:
+            self._etr_senha.config(show='*')
+        self._senha_oculta = not self._senha_oculta  
         
     def abrir_cadastrar(self):
         cadastro_toplevel = tk.Toplevel(self._janela)
@@ -72,9 +81,15 @@ class Login:
         self._etr_email = ttk.Entry(self._frame_login, width=30)
         self._etr_email.grid(row=2, column=3, sticky="e")
 
+        self._senha_var = tk.StringVar()
         self._lbl_senha = ttk.Label(self._frame_login, text='Senha:', width=30).grid(row=3, column=3, sticky="e")
-        self._etr_senha = ttk.Entry(self._frame_login, width=30)
+        self._etr_senha = ttk.Entry(self._frame_login, width=30,show="*",textvariable=self._senha_var)
         self._etr_senha.grid(row=4, column=3, sticky="e")
+        
+        self._ver_label = ttk.Label(self._frame_login, text="◉", cursor="hand2", font=("Arial", 12))
+        self._ver_label.grid(row=4, column=4, pady=10)          
+        self._ver_label.bind("<Button-1>", self.mostrar)
+        self._senha_oculta = True
 
         self._link_label = ttk.Label(self._frame_login, text="esqueci a senha", cursor="hand2", font=("Helvetica", 8, "underline"))
         self._link_label.grid(row=5, column=3, sticky="e")  # Centraliza na coluna da direita

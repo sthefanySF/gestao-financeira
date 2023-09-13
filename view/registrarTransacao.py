@@ -84,7 +84,7 @@ class RegistrarTransacoes:
         self._text_descricao.grid(row=3, column=0, padx=10, pady=5, sticky="ew")
 
         ttk.Label(self._frame_gastos, text="Categoria:").grid(row=4, column=0, padx=10, pady=5, sticky="w")
-        self._combo_categoria = ttk.Combobox(self._frame_gastos, values=["Alimentação", "Transporte", "Outros"])
+        self._combo_categoria = ttk.Combobox(self._frame_gastos, values= self.categorias())
         self._combo_categoria.grid(row=5, column=0, padx=10, pady=5, sticky="ew")
 
         ttk.Label(self._frame_gastos, text="Data:").grid(row=6, column=0, padx=10, pady=5, sticky="w")
@@ -155,6 +155,10 @@ class RegistrarTransacoes:
         self._entry_valor.delete(0, 'end')
         self._text_descricao.delete('1.0', 'end')
         self._combo_categoria.set('')
+    
+    def categorias(self):
+        categorias = Conexao.retornar_todos('SELECT nome FROM categoria;')
+        return categorias
 
 if __name__ == "__main__":
     root = ttk.Window()  # Escolha um tema do ttkbootstrap

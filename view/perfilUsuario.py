@@ -64,13 +64,13 @@ class PerfilUsuario:
     
     def abrir_categoria(self):
         from categorias import Categorias
-
-
         Categorias_toplevel = tk.Toplevel(self._janela)
         categorias_window = Categorias(Categorias_toplevel)
 
     def abrir_seguranca(self):
-        pass
+        from recuperarSenha import SenhaUsuario
+        recuperar = tk.Toplevel(self._janela)
+        janela = SenhaUsuario(recuperar,self._id_usuario_logado)
 
    
     def sair(self):
