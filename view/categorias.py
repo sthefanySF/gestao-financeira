@@ -1,6 +1,8 @@
 import tkinter as tk
 import ttkbootstrap as ttk
 
+from conexao import Conexao
+
 class Categorias:
     def __init__(self, master):
         self._janela = master
@@ -44,16 +46,7 @@ class Categorias:
         pass
 
     def adicionar_categorias_iniciais(self): #só para testar a visualização
-        categorias = [
-            ("1","Alimentação",),
-            ("2","Lazer",),
-            ("3","Transporte",),
-            ("4","Aluguel",),
-            ("5","Contas",),
-            ("6","Educação",),
-            ("7","Saúde",),
-            ("8","Outros",)
-        ]
+        categorias = Conexao.retornar_todos('SELECT * FROM categoria;')
 
         for categoria in categorias:
             self.table.insert("", "end", values=categoria)

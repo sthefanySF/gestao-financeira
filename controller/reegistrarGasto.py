@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, './')
 sys.path.insert(0, '.models')
-from conexao import Conexao
+from models.conexao import Conexao
 
 
 class RegistrarGasto:
@@ -38,3 +38,10 @@ class RegistrarGasto:
             WHERE id = ?
         '''
         Conexao.atualizar(sql, (id_usuario, valor, descricao, categoria, data, id_registro))
+    @classmethod
+    def retornar_gastos(cls,id_usuario):
+        return Conexao.retornar_usuario(f'SELECT * FROM gastos WHERE id_usuario = {id_usuario};')
+    
+    @classmethod
+    def retornar_total_gastos(cls,id_usuario):
+        return Conexao.retornar_usuario(f"SELECT SUM(valor)  FROM gastos WHERE id_usuario = {id_usuario};")

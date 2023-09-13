@@ -13,7 +13,7 @@ class RegistrarGanho:
             INSERT INTO ganhos (id_usuario, ganho_mensal, ganho_adicional, descricao_adicional)
             VALUES ("{self.id_usuario}","{self.ganho_mensal}","{self.ganho_adicional}", "{self.descricao_adicional}")
         '''
-        Conexao.salvar_no_banco(self, sql)
+        Conexao.salvar_no_banco(sql)
         
 
     @classmethod
@@ -38,3 +38,8 @@ class RegistrarGanho:
             WHERE id = ?
         '''
         Conexao.atualizar(sql, (id_usuario, ganho_mensal, ganho_adicional, descricao_adicional, id_registro))
+   
+    @classmethod
+    def ganho_total(cls,id_usuario):
+        sql = f"SELECT SUM(ganho_mensal + ganho_adicional) FROM ganhos WHERE id_usuario = {id_usuario};"
+        return Conexao.retornar_usuario(sql)

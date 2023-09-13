@@ -3,6 +3,12 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from PIL import Image, ImageTk
 import webbrowser
+import sys
+sys.path.insert(0, './')
+sys.path.insert(0, './controller')
+
+from controller.reegistrarGasto import RegistrarGasto
+from controller.registrarGanho import RegistrarGanho
 
 from perfilUsuario import PerfilUsuario
 from registrarTransacao import RegistrarTransacoes
@@ -41,10 +47,10 @@ class TelaInicial:
         self._lbl_meter.grid(row=0, column=4, columnspan=2)
         self._lbl_meter.config(font="Arial 13 bold")
 
-        self._mtr1 = ttk.Meter(self._janela, subtext='Saldo', bootstyle='success', interactive=False, amountused=50)
+        self._mtr1 = ttk.Meter(self._janela, subtext='Saldo', bootstyle='success', interactive=False, amountused=self.saldo())
         self._mtr1.grid(row=1, column=4, rowspan=4, sticky='e', padx=20)
 
-        self._mtr2 = ttk.Meter(self._janela, subtext='Gastos', bootstyle='danger', interactive=False, amountused=20)
+        self._mtr2 = ttk.Meter(self._janela, subtext='Gastos', bootstyle='danger', interactive=False, amountused=self.gastos())
     
         self._mtr2.grid(row=1, column=5, rowspan=4, sticky='e', padx=20)
         
@@ -63,5 +69,25 @@ class TelaInicial:
         
     def voltar(self):
         self._janela.destroy()
+        
+    def saldo(self):
+        ganho = RegistrarGanho.ganho_total(self._id_usuario_atual)
+        
+        gasto = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
+
+        ganho = float(ganho[0][0]) if ganho and ganho[0] else 0
+        gasto = float(gasto[0][0]) if gasto and gasto[0] else 0
+
+        saldo = ganho - gasto
+        
+        return saldo
+    def gastos(self):
+        gasto = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
+
+        gasto = float(gasto[0][0]) if gasto and gasto[0] else 0
+
+        return gasto
+        
+
 
         

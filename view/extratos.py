@@ -5,6 +5,8 @@ from ttkbootstrap.constants import *
 
 import sys
 
+from controller.reegistrarGasto import RegistrarGasto
+
 
 
 
@@ -52,13 +54,21 @@ class Extratos:
          #LabelFrame para Ganho do mês
         self._lbl_ganho_mes = ttk.LabelFrame(frame_menu, text='Ganho do mês', bootstyle="success", width=400, height=200)
         self._lbl_ganho_mes.grid(row=1, column=2, padx=10, pady=10, sticky='ew', rowspan=5)
+        
+        self.lbl_ganho = ttk.Label(self._lbl_ganho_mes,text= self.ganhos_totais() )
+        self.lbl_ganho.config(font="Arial 15 bold")
+        self.lbl_ganho.pack()
 
         # LabelFrame para Gasto do mês
         self._lbl_gasto_mes = ttk.LabelFrame(frame_menu, text='Gasto do mês', bootstyle="danger", width=400, height=200)
         self._lbl_gasto_mes.grid(row=1, column=3, padx=10, pady=10, sticky='ew', rowspan=5)
 
-
-        # Botões do menu
+        self.lbl = ttk.Label(self._lbl_gasto_mes, text=self.gastos_totais())
+        self.lbl.config(font="Arial 15 bold")
+        self.lbl.pack()
+        
+        
+        # Botões do menu        
         self._btn_perfil = ttk.Button(frame_menu, text='Meu perfil', width=20, bootstyle="success", command=self.abrir_perfil)
         self._btn_perfil.grid(row=0, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
@@ -115,21 +125,21 @@ class Extratos:
         self._lbl_gastos.grid(row=2, column=0, padx=10, pady=10, sticky='ew')
 
         # Tabela de Gastos
-        self._tabela_gastos = ttk.Treeview(self._lbl_gastos, columns=('Data', 'Descrição do gasto', 'Categoria', 'Valor do gasto'))
+        self._tabela_gastos = ttk.Treeview(self._lbl_gastos, columns=('Valor do gasto', 'Descrição do gasto', 'Categoria', 'Data'))
 
         
         self._tabela_gastos.column('#0', width=0)
-        self._tabela_gastos.column('Data', width=100)
+        self._tabela_gastos.column('Valor do gasto', width=100)
         self._tabela_gastos.column('Descrição do gasto', width=100)
         self._tabela_gastos.column('Categoria', width=100)
-        self._tabela_gastos.column('Valor do gasto', width=100)
+        self._tabela_gastos.column('Data', width=100)
 
       
         self._tabela_gastos.heading('#0', text='', anchor=W)
-        self._tabela_gastos.heading('Data', text='Data', anchor=W)
+        self._tabela_gastos.heading('Valor do gasto', text='Valor do gasto', anchor=W)
         self._tabela_gastos.heading('Descrição do gasto', text='Descrição do gasto', anchor=W)
         self._tabela_gastos.heading('Categoria', text='Categoria', anchor=W)
-        self._tabela_gastos.heading('Valor do gasto', text='Valor do gasto', anchor=W)
+        self._tabela_gastos.heading('Data', text='Data', anchor=W)
 
         # Scrollbar para a tabela de gastos
         self._scrollbar_gastos = ttk.Scrollbar(self._lbl_gastos, orient='vertical', command=self._tabela_gastos.yview)
@@ -146,6 +156,7 @@ class Extratos:
     
         frame_menu_tabela.grid_rowconfigure(0, weight=1)
         frame_menu_tabela.grid_columnconfigure(0, weight=1)
+        self.atualizar_tabela_gastos()
 
     def abrir_perfil(self):
         perfil_window = PerfilUsuario(self._janela,self._id_usuario_atual)
@@ -186,7 +197,31 @@ class Extratos:
         # Insira os ganhos na tabela
         for ganho in ganhos:
             self._tabela_ganhos.insert('', 'end', values=ganho[2:])  # Ignora o primeiro valor (ID)
+        
+    def atualizar_tabela_gastos(self):
+        # Limpe os itens existentes na tabela
+        for item in self._tabela_gastos.get_children():
+            self._tabela_gastos.delete(item)
 
+        # Obtenha todos os gastos do banco de dados para o usuário atual
+        gastos = RegistrarGasto.retornar_gastos(self._id_usuario_atual)
+
+        # Insira os gastos na tabela
+        for gasto in gastos:
+            self._tabela_gastos.insert('', 'end', values=gasto[2:])
+
+    def gastos_totais(self):
+        valor = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
+        for i in valor:
+            valor = str(i[0])
+        return valor
+    
+    def ganhos_totais(self):
+        valor = RegistrarGanho.ganho_total(self._id_usuario_atual)
+        for i in valor:
+            valor = str(i[0])
+        return valor
+        
 if __name__ == "__main__":
     root = ttk.Window(themename='litera')
     login = Extratos(root)

@@ -3,7 +3,7 @@ import sqlite3
 
 class Conexao:
     
-    def salvar_no_banco(self, sql):
+    def salvar_no_banco(sql):
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
 
@@ -90,4 +90,4 @@ class Conexao:
             return usuario[0]#retorando o id do usuario encontrado
         else:
             return False
-        
+
