@@ -19,11 +19,11 @@ from registrarTransacao import RegistrarTransacoes
 from controller.registrarGanho import RegistrarGanho
 
 class Extratos:
-    def __init__(self, master,usuario):
+    def __init__(self, master, usuario):
         self._id_usuario_atual = usuario
         self._janela = master
         self._janela.title('Gestão Fácil/Extratos')
-        self._janela.geometry('1015x900')
+        self._janela.geometry('1000x800')
 
         # Frame principal para conter tudo
         frame_principal = ttk.Frame(self._janela)
@@ -51,23 +51,22 @@ class Extratos:
         label_resumo = ttk.Label(frame_resumo, text='Resumo do mês', font=('Helvetica', 16))
         label_resumo.pack(expand=True, pady=10)
 
-         #LabelFrame para Ganho do mês
-        self._lbl_ganho_mes = ttk.LabelFrame(frame_menu, text='Ganho do mês', bootstyle="success", width=400, height=200)
+        # LabelFrame para Ganho do mês
+        self._lbl_ganho_mes = ttk.LabelFrame(frame_menu, text='Ganho do mês', bootstyle="success")
         self._lbl_ganho_mes.grid(row=1, column=2, padx=10, pady=10, sticky='ew', rowspan=5)
-        
-        self.lbl_ganho = ttk.Label(self._lbl_ganho_mes,text= self.ganhos_totais() )
-        self.lbl_ganho.config(font="Arial 15 bold")
+    
+        self.lbl_ganho = ttk.Label(self._lbl_ganho_mes, text=self.ganhos_totais())
+        self.lbl_ganho.config(font="Arial 30 bold")
         self.lbl_ganho.pack()
 
         # LabelFrame para Gasto do mês
-        self._lbl_gasto_mes = ttk.LabelFrame(frame_menu, text='Gasto do mês', bootstyle="danger", width=400, height=200)
+        self._lbl_gasto_mes = ttk.LabelFrame(frame_menu, text='Gasto do mês', bootstyle="danger")
         self._lbl_gasto_mes.grid(row=1, column=3, padx=10, pady=10, sticky='ew', rowspan=5)
 
         self.lbl = ttk.Label(self._lbl_gasto_mes, text=self.gastos_totais())
-        self.lbl.config(font="Arial 15 bold")
+        self.lbl.config(font="Arial 30 bold")
         self.lbl.pack()
-        
-        
+
         # Botões do menu        
         self._btn_perfil = ttk.Button(frame_menu, text='Meu perfil', width=20, bootstyle="success", command=self.abrir_perfil)
         self._btn_perfil.grid(row=0, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
@@ -81,15 +80,12 @@ class Extratos:
         self._btn_extrato = ttk.Button(frame_menu, text='Extrato', width=20, bootstyle="success")
         self._btn_extrato.grid(row=3, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
-        self._btn_contas = ttk.Button(frame_menu, text='Minhas contas', width=20, bootstyle="success")
-        self._btn_contas.grid(row=4, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
-
         self._btn_voltar = ttk.Button(frame_menu, text='Voltar', width=20, bootstyle="success", command=self.voltar) 
         self._btn_voltar.grid(row=5, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
         # LabelFrame para Ganhos para a tabela de ganhos
-        self._lbl_ganhos = ttk.LabelFrame(frame_menu_tabela, text='Ganhos', bootstyle="success", width=400, height=200)
-        self._lbl_ganhos.grid(row=1, column=0, padx=10, pady=10, sticky='ew')
+        self._lbl_ganhos = ttk.LabelFrame(frame_menu_tabela, text='Ganhos', bootstyle="success")
+        self._lbl_ganhos.grid(row=1, column=0, padx=10, pady=10, sticky='nsew')
 
         # Tabela de Ganhos
         self._tabela_ganhos = ttk.Treeview(self._lbl_ganhos, columns=('Ganho Mensal', 'Ganho Adicional', 'Descrição do Ganho Adicional'))
@@ -121,8 +117,8 @@ class Extratos:
         self.atualizar_tabela_ganhos()  # Chame este método para carregar os ganhos na inicialização
 
         #LabelFrame para Gastos
-        self._lbl_gastos = ttk.LabelFrame(frame_menu_tabela, text='Gastos', bootstyle="danger", width=400, height=200)
-        self._lbl_gastos.grid(row=2, column=0, padx=10, pady=10, sticky='ew')
+        self._lbl_gastos = ttk.LabelFrame(frame_menu_tabela, text='Gastos', bootstyle="danger", width=400, height=400)
+        self._lbl_gastos.grid(row=2, column=0, padx=10, pady=10, sticky='nsew')
 
         # Tabela de Gastos
         self._tabela_gastos = ttk.Treeview(self._lbl_gastos, columns=('Valor do gasto', 'Descrição do gasto', 'Categoria', 'Data'))
