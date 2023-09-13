@@ -102,8 +102,10 @@ class Login:
         self._senha_oculta = True
 
         self._link_label = ttk.Label(self._frame_login, text="esqueci a senha", cursor="hand2", font=("Helvetica", 8, "underline"))
+
         self._link_label.grid(row=5, column=3, sticky="e")  # Centraliza na coluna da direita
         self._link_label.bind("<Button-1>",self.abrir_janela_recuperacao_senha)
+
 
         self._btn = ttk.Button(self._frame_login, text='Entrar', width=20, bootstyle="success", command=self.entrar)
         self._btn.grid(row=6, column=3, pady=10)
