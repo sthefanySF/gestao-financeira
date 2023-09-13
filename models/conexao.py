@@ -3,7 +3,8 @@ import sqlite3
 
 class Conexao:
     
-    def salvar_no_banco(sql):
+    @classmethod
+    def salvar_no_banco(cls,sql):
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
 
@@ -65,8 +66,8 @@ class Conexao:
         conexao.commit()
         conexao.close()
 
-    @staticmethod
-    def atualizar(sql):
+    @classmethod
+    def atualizar(cls,sql):
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
         cursor.execute(sql)
