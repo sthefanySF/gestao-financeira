@@ -27,7 +27,7 @@ class JanelaEdicaoGanho:
         text_descricao.insert("1.0", descricao)
         text_descricao.pack()
 
-        ttk.Button(self._janela_edicao, text="Salvar", command=self.salvar).pack()
+        ttk.Button(self._janela_edicao, text="Salvar",  bootstyle="success-outline", command=self.salvar).pack()
 
     def salvar(self):
         novo_ganho_mensal = self._ganho_mensal.get()

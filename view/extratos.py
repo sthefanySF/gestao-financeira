@@ -7,6 +7,7 @@ import sys
 
 from controller.reegistrarGasto import RegistrarGasto
 from view.editarGanho import JanelaEdicaoGanho
+from view.editarGasto import JanelaEdicaoGasto
 
 
 
@@ -24,7 +25,7 @@ class Extratos:
         self._id_usuario_atual = usuario
         self._janela = master
         self._janela.title('Gestão Fácil/Extratos')
-        self._janela.geometry('1000x800')
+        self._janela.geometry('1000x900')
 
         # Frame principal para conter tudo
         frame_principal = ttk.Frame(self._janela)
@@ -84,18 +85,32 @@ class Extratos:
         self._btn_voltar = ttk.Button(frame_menu, text='Voltar', width=20, bootstyle="success", command=self.voltar) 
         self._btn_voltar.grid(row=5, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
         
-        # Criar botões para editar e excluir
-        self._btn_editar = ttk.Button(frame_menu_tabela, text='Editar', bootstyle="success", command=self.editar_ganho)
-        self._btn_excluir = ttk.Button(frame_menu_tabela, text='Excluir', bootstyle="success", command=self.excluir_item)
-
-        # Posicionamento dos botões "Editar" e "Excluir" usando grid
-        self._btn_editar.grid(row=3, column=0, padx=(20, 10), pady=10, sticky='e')
-        self._btn_excluir.grid(row=3, column=0, padx=(20, 20), pady=10, sticky='w')
-
-
         # LabelFrame para Ganhos para a tabela de ganhos
         self._lbl_ganhos = ttk.LabelFrame(frame_menu_tabela, text='Ganhos', bootstyle="success")
         self._lbl_ganhos.grid(row=1, column=0, padx=10, pady=10, sticky='nsew')
+        
+        # Frame para botões de "Editar Ganho" e "Excluir Ganho"
+        frame_botoes_ganho = ttk.Frame(self._lbl_ganhos)
+        frame_botoes_ganho.grid(row=1, column=0, padx=10, pady=10, sticky='ew')
+        
+         # Criar botões para editar e excluir ganhos
+        self._btn_editar_ganho = ttk.Button(frame_botoes_ganho, text='Editar Ganho', bootstyle="success-outline", command=self.editar_ganho)
+        self._btn_excluir_ganho = ttk.Button(frame_botoes_ganho, text='Excluir Ganho', bootstyle="success-outline", command=self.excluir_ganho)
+
+        # Criar botões para editar e excluir gastos
+        self._btn_editar_gasto = ttk.Button(frame_menu_tabela, text='Editar Gasto', bootstyle="success-outline", command=self.editar_gasto)
+        self._btn_excluir_gasto = ttk.Button(frame_menu_tabela, text='Excluir Gasto', bootstyle="success-outline", command=self.excluir_gasto)
+
+        # Posicionamento dos botões "Editar" e "Excluir" para ganhos e gastos usando grid
+        self._btn_editar_ganho.grid(row=3, column=1, padx=(20, 10), pady=10, sticky='e')
+        self._btn_excluir_ganho.grid(row=3, column=2, padx=(20, 20), pady=10, sticky='w')
+        
+        
+        self._btn_editar_gasto.grid(row=4, column=0, padx=(20, 10), pady=10, sticky='e')
+        self._btn_excluir_gasto.grid(row=4, column=0, padx=(20, 20), pady=10, sticky='w')
+
+
+        
 
         # Tabela de Ganhos
         self._tabela_ganhos = ttk.Treeview(self._lbl_ganhos, columns=('Ganho Mensal', 'Ganho Adicional', 'Descrição do Ganho Adicional'))
@@ -238,34 +253,60 @@ class Extratos:
         edicao_ganho = JanelaEdicaoGanho(self._janela, item_id, ganho_mensal, ganho_adicional, descricao, self.salvar_edicao_ganho)
 
 
+    def editar_gasto(self):
+        selected_item = self._tabela_gastos.selection()
+
+        if not selected_item:
+            messagebox.showerror("Erro na edição de gasto", "Selecione um gasto para editar.")
+            return
+
+        item_id = selected_item[0]
+        gasto_values = self._tabela_gastos.item(item_id, 'values')
+        valor_gasto = gasto_values[0]
+        descricao_gasto = gasto_values[1]
+        categoria_gasto = gasto_values[2]
+        data_gasto = gasto_values[3]
+
+        edicao_gasto = JanelaEdicaoGasto(self._janela, item_id, valor_gasto, descricao_gasto, categoria_gasto, data_gasto, self.salvar_edicao_gasto)
+
+
     def salvar_edicao_ganho(self, item_id, novo_ganho_mensal, novo_ganho_adicional, nova_descricao):
         self._tabela_ganhos.item(item_id, values=("ID", novo_ganho_mensal, novo_ganho_adicional, nova_descricao))
 
         messagebox.showinfo("Edição de ganho", "Ganho editado com sucesso.")
 
-            
-    def excluir_item(self):
-        selected_ganho = self._tabela_ganhos.selection()
-        selected_gasto = self._tabela_gastos.selection()
+    
+    def salvar_edicao_gasto(self, item_id, novo_valor, nova_descricao, nova_categoria, nova_data):
+        self._tabela_gastos.item(item_id, values=(novo_valor, nova_descricao, nova_categoria, nova_data))
 
-        if not selected_ganho and not selected_gasto:
-            messagebox.showerror('Erro na exclusão', 'Selecione um item para excluir.')
+        messagebox.showinfo("Edição de gasto", "Gasto editado com sucesso.")
+
+    
+    def excluir_ganho(self):
+        selected_ganho = self._tabela_ganhos.selection()
+
+        if not selected_ganho:
+            messagebox.showerror('Erro na exclusão', 'Selecione um ganho para excluir.')
             return
 
-        if selected_ganho:
-            confirmacao = messagebox.askyesno('Confirmação', 'Tem certeza que deseja excluir este ganho?')
+        confirmacao = messagebox.askyesno('Confirmação', 'Tem certeza que deseja excluir este ganho?')
 
-            if confirmacao:
-                for item in selected_ganho:
-                    self._tabela_ganhos.delete(item)
-                
+        if confirmacao:
+            for item in selected_ganho:
+                self._tabela_ganhos.delete(item)
 
-        elif selected_gasto:
-            confirmacao = messagebox.askyesno('Confirmação', 'Tem certeza que deseja excluir este gasto?')
+    def excluir_gasto(self):
+        selected_gasto = self._tabela_gastos.selection()
 
-            if confirmacao:
-                for item in selected_gasto:
-                    self._tabela_gastos.delete(item)
+        if not selected_gasto:
+            messagebox.showerror('Erro na exclusão', 'Selecione um gasto para excluir.')
+            return
+
+        confirmacao = messagebox.askyesno('Confirmação', 'Tem certeza que deseja excluir este gasto?')
+
+        if confirmacao:
+            for item in selected_gasto:
+                self._tabela_gastos.delete(item)
                     
                     
 
