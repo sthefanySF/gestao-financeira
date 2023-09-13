@@ -183,6 +183,7 @@ class Extratos:
         self.atualizar_tabela_gastos()
 
     def abrir_perfil(self):
+        self._janela.withdraw()
         perfil_window = PerfilUsuario(self._janela,self._id_usuario_atual)
     
     def abrir_transacoes(self):

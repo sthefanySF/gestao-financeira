@@ -94,6 +94,7 @@ class RegistrarTransacoes:
         ttk.Button(self._frame_gastos, text="Registrar Gasto",bootstyle="success-outline", command=self.registrar_gasto).grid(row=8, column=0, padx=10, pady=10, sticky="ew")
     
     def abrir_perfil(self):
+        self._janela.withdraw()
         perfil_window = PerfilUsuario(self._janela,self._id_usuario_atual)
     
     def abrir_transacoes(self):
