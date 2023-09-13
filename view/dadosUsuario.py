@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import ttkbootstrap as ttk
 import sys
 from conexao import Conexao
@@ -7,11 +8,12 @@ sys.path.insert(0, './controller')
 from controller import usuario
 
 class MeusDados:
-    def __init__(self, master, id_usuario_logado):
+    def __init__(self, master, id_usuario_logado,id):
         self._janela = master
         self.usuario = id_usuario_logado
         self._janela.title('Gestão Fácil/Dados do Usuário')
         self._janela.geometry('800x500')
+        self.id = id
 
         self.frame_dados = ttk.Frame(self._janela)
         self.frame_dados.pack(expand=True)
@@ -45,9 +47,10 @@ class MeusDados:
     def atualizar_informacoes(self):
         novo_nome = self.nome_entry.get()
         novo_email = self.email_entry.get()
+        sql = f'''UPDATE usuarios SET nome = '{novo_nome}', email = '{novo_email}' WHERE id = {self.id};'''
+        Conexao.atualizar(sql)
+        messagebox.showinfo('Sucesso',"Atualização realizada com sucesso!!")
 
-        if novo_nome and novo_email:
-            conexao = Conexao
 
             
     def voltar(self):

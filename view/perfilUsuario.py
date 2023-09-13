@@ -12,9 +12,6 @@ from controller import usuario
 from conexao import Conexao
 
 
-
-
-
 class PerfilUsuario:
     _photo = None  # Atributo de classe para manter a referência à imagem
 
@@ -62,7 +59,7 @@ class PerfilUsuario:
         usuario_logado = usuario.Usuario.obter_usuario_por_id(id_usuario_logado)
 
         meus_dados_toplevel = tk.Toplevel(self._janela)
-        meus_dados_window = MeusDados(meus_dados_toplevel, usuario_logado)
+        meus_dados_window = MeusDados(meus_dados_toplevel, usuario_logado,self._id_usuario_logado)
 
     
     def abrir_categoria(self):
