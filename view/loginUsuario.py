@@ -51,8 +51,6 @@ class Login:
             self._etr_senha.config(show='*')
         self._senha_oculta = not self._senha_oculta 
 
-# Agora você pode chamar esta função quando precisar abrir a janela de recuperação de senha
-# Por exemplo, você pode associar essa função a um botão em outra janela
         
     def abrir_cadastrar(self):
        recuperar = tk.Toplevel(self._janela)

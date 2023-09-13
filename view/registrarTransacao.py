@@ -131,27 +131,26 @@ class RegistrarTransacoes:
         categoria = self._combo_categoria.get()
         data = self._datepicker_data.entry.get()
 
-        # Validação dos campos
+      
         if not valor or not categoria or not data:
             messagebox.showerror("Erro no registro de gasto", "Preencha todos os campos obrigatórios.")
             return
 
         try:
-            valor = float(valor)  # Certifica-se de que o valor seja um número
+            valor = float(valor)  
         except ValueError:
             messagebox.showerror("Erro no registro de gasto", "O valor do gasto deve ser um número válido.")
             return
 
-        # Converte a data para o formato desejado (por exemplo, 'YYYY-MM-DD')
+       
         data_formatada = datetime.strptime(data, "%d/%m/%Y").strftime("%Y-%m-%d")
 
-        # Inserir o gasto no banco de dados usando a classe Conexao
+        
         sql = f'INSERT INTO gastos (id_usuario, valor, descricao, categoria, data) VALUES ({self._id_usuario_atual}, {valor}, "{descricao}", "{categoria}", "{data_formatada}")'
 
         Conexao.salvar_no_banco(sql)
         messagebox.showinfo("Registro de gasto", "Gasto registrado com sucesso!")
 
-        # Limpar os campos após o registro
         self._entry_valor.delete(0, 'end')
         self._text_descricao.delete('1.0', 'end')
         self._combo_categoria.set('')
@@ -161,6 +160,6 @@ class RegistrarTransacoes:
         return categorias
 
 if __name__ == "__main__":
-    root = ttk.Window()  # Escolha um tema do ttkbootstrap
+    root = ttk.Window() 
     login = RegistrarTransacoes(root)
     root.mainloop()

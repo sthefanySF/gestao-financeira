@@ -6,6 +6,7 @@ from ttkbootstrap.constants import *
 import sys
 
 from controller.reegistrarGasto import RegistrarGasto
+from view.editarGanho import JanelaEdicaoGanho
 
 
 
@@ -82,6 +83,15 @@ class Extratos:
 
         self._btn_voltar = ttk.Button(frame_menu, text='Voltar', width=20, bootstyle="success", command=self.voltar) 
         self._btn_voltar.grid(row=5, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
+        
+        # Criar botões para editar e excluir
+        self._btn_editar = ttk.Button(frame_menu_tabela, text='Editar', bootstyle="success", command=self.editar_ganho)
+        self._btn_excluir = ttk.Button(frame_menu_tabela, text='Excluir', bootstyle="success", command=self.excluir_item)
+
+        # Posicionamento dos botões "Editar" e "Excluir" usando grid
+        self._btn_editar.grid(row=3, column=0, padx=(20, 10), pady=10, sticky='e')
+        self._btn_excluir.grid(row=3, column=0, padx=(20, 20), pady=10, sticky='w')
+
 
         # LabelFrame para Ganhos para a tabela de ganhos
         self._lbl_ganhos = ttk.LabelFrame(frame_menu_tabela, text='Ganhos', bootstyle="success")
@@ -177,32 +187,24 @@ class Extratos:
       
         novo_ganho = RegistrarGanho(self._id_usuario_atual, ganho_mensal, ganho_adicional, descricao)
         
-        # Após inserir um novo ganho, atualize a tabela de ganhos
         self.atualizar_tabela_ganhos()
         
         return messagebox.showinfo("Registro de ganho", "Ganho registrado com sucesso!")
 
     def atualizar_tabela_ganhos(self):
-        # Limpe os itens existentes na tabela
         for item in self._tabela_ganhos.get_children():
             self._tabela_ganhos.delete(item)
         
-        # Obtenha todos os ganhos do banco de dados
         ganhos = RegistrarGanho.retornar_unico_usuario(self._id_usuario_atual)
         
-        # Insira os ganhos na tabela
         for ganho in ganhos:
             self._tabela_ganhos.insert('', 'end', values=ganho[2:])  # Ignora o primeiro valor (ID)
         
     def atualizar_tabela_gastos(self):
-        # Limpe os itens existentes na tabela
         for item in self._tabela_gastos.get_children():
             self._tabela_gastos.delete(item)
 
-        # Obtenha todos os gastos do banco de dados para o usuário atual
         gastos = RegistrarGasto.retornar_gastos(self._id_usuario_atual)
-
-        # Insira os gastos na tabela
         for gasto in gastos:
             self._tabela_gastos.insert('', 'end', values=gasto[2:])
 
@@ -217,6 +219,57 @@ class Extratos:
         for i in valor:
             valor = str(i[0])
         return valor
+    
+    
+    def editar_ganho(self):
+        selected_item = self._tabela_ganhos.selection()
+
+        if not selected_item:
+            messagebox.showerror("Erro na edição de ganho", "Selecione um ganho para editar.")
+            return
+
+        item_id = selected_item[0]
+        ganho_values = self._tabela_ganhos.item(item_id, 'values')
+        ganho_mensal = ganho_values[0]
+        ganho_adicional = ganho_values[1]
+        descricao = ganho_values[2]
+
+        
+        edicao_ganho = JanelaEdicaoGanho(self._janela, item_id, ganho_mensal, ganho_adicional, descricao, self.salvar_edicao_ganho)
+
+
+    def salvar_edicao_ganho(self, item_id, novo_ganho_mensal, novo_ganho_adicional, nova_descricao):
+        self._tabela_ganhos.item(item_id, values=("ID", novo_ganho_mensal, novo_ganho_adicional, nova_descricao))
+
+        messagebox.showinfo("Edição de ganho", "Ganho editado com sucesso.")
+
+            
+    def excluir_item(self):
+        selected_ganho = self._tabela_ganhos.selection()
+        selected_gasto = self._tabela_gastos.selection()
+
+        if not selected_ganho and not selected_gasto:
+            messagebox.showerror('Erro na exclusão', 'Selecione um item para excluir.')
+            return
+
+        if selected_ganho:
+            confirmacao = messagebox.askyesno('Confirmação', 'Tem certeza que deseja excluir este ganho?')
+
+            if confirmacao:
+                for item in selected_ganho:
+                    self._tabela_ganhos.delete(item)
+                
+
+        elif selected_gasto:
+            confirmacao = messagebox.askyesno('Confirmação', 'Tem certeza que deseja excluir este gasto?')
+
+            if confirmacao:
+                for item in selected_gasto:
+                    self._tabela_gastos.delete(item)
+                    
+                    
+
+
         
 if __name__ == "__main__":
     root = ttk.Window(themename='litera')

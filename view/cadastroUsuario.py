@@ -49,13 +49,13 @@ class Cadastro:
         else:
             messagebox.showerror('Atenção', 'Preencha todos os campos')
         
-    def voltar(self):
-        self._janela.destroy()
-            novo_usuario = Usuario(nome, email, senha)
-            messagebox.showinfo('Info', "Seu usuário foi criado com sucesso")
-            self.voltar()
-        else:
-            messagebox.showerror("Atenção", "Preencha todos os campos!!")
+    # def voltar(self):
+    #     self._janela.destroy()
+    #         novo_usuario = Usuario(nome, email, senha)
+    #         messagebox.showinfo('Info', "Seu usuário foi criado com sucesso")
+    #         self.voltar()
+    #     else:
+    #         messagebox.showerror("Atenção", "Preencha todos os campos!!")
 
     def voltar(self):
         self._janela.destroy()
