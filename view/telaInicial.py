@@ -4,6 +4,7 @@ from ttkbootstrap.constants import *
 from PIL import Image, ImageTk
 import webbrowser
 import sys
+
 sys.path.insert(0, './')
 sys.path.insert(0, './controller')
 
@@ -15,12 +16,17 @@ from registrarTransacao import RegistrarTransacoes
 from extratos import Extratos
 #from extratos import Extratos
 
+
+
+
 class TelaInicial:
-    def __init__(self,master,usuario):
+    def __init__(self,master,usuario, login_window=None):
         self._id_usuario_atual = usuario
         self._janela = master
         self._janela.title('Gestão Fácil/Tela inicial')
         self._janela.geometry('850x500')
+        from loginUsuario import Login
+        self._login_window = login_window  # Mantenha a referência à janela de login
 
         frame_menu = ttk.Frame(self._janela)
         frame_menu.grid(row=0, column=0)
@@ -58,7 +64,11 @@ class TelaInicial:
         # self._lbl_meter.config(font="Arial 13 bold")
 
     def abrir_perfil(self):
-        perfil_window = PerfilUsuario(self._janela, self._id_usuario_atual)
+        # Esconda a janela de TelaInicial
+        #self._janela.withdraw()
+
+        perfil_window = PerfilUsuario(self._janela, self._id_usuario_atual, self._login_window)
+    
     def abrir_extratro(self):
         self._janela_Extrato = tk.Toplevel(self._janela)
 

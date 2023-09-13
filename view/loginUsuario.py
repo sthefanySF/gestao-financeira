@@ -36,13 +36,19 @@ class Login:
 
         usuario_autenticado = Usuario.autenticar(email, senha)
 
-
         if usuario_autenticado:
-              print(usuario_autenticado)
-              tela_inicial_toplevel = tk.Toplevel(self._janela)
-              tela_inicial = TelaInicial(tela_inicial_toplevel,usuario_autenticado)
+            # Esconda a janela de login
+            self._janela.withdraw()
+
+            tela_inicial_toplevel = tk.Toplevel(self._janela)
+            tela_inicial = TelaInicial(tela_inicial_toplevel, usuario_autenticado, self)
         else:
-            messagebox.showwarning('Atençao',"Email ou senha invalidos!")
+            messagebox.showwarning('Atenção', 'Email ou senha inválidos!')
+
+    def mostrar_login(self):
+        # Mostrar a janela de login novamente
+        self._janela.deiconify()
+
     def mostrar(self,event):
         if self._senha_oculta:
             self._senha_var.set(self._etr_senha.get())
@@ -66,7 +72,8 @@ class Login:
         self._janela = master
         self._janela.title('Gestão Fácil/Login')
         self._janela.geometry('800x500')
-
+        # Variável de instância para controlar o estado da janela de login
+        self._login_window_visible = True
 
         self._parte_verde = tk.Label(self._janela, background='#33bc7d')
 

@@ -15,10 +15,11 @@ from conexao import Conexao
 class PerfilUsuario:
     _photo = None  # Atributo de classe para manter a referência à imagem
 
-    def __init__(self, master, id_usuario_logado):
+    def __init__(self, master, id_usuario_logado,login_window= None):
         self._janela = ttk.Toplevel(master)
         self._janela.title('Gestão Fácil/Meu Perfil')
         self._janela.geometry('800x500')
+        self._login_window = login_window  # Mantenha a referência à janela de login
         nome_usuario = self.obter_nome_usuario_logado(id_usuario_logado)
         self._id_usuario_logado = id_usuario_logado
         
@@ -75,12 +76,8 @@ class PerfilUsuario:
    
     def sair(self):
         self._janela.destroy()
-        from loginUsuario import Login
-        # Recriar a janela de login sem o argumento de tema
-        root = ttk.Window()
-        login = Login(root)
-        root.mainloop()
-
+        self._login_window.mostrar_login()  # Mostrar a janela de login novamente ao sair
+    
     def voltar(self):
         self._janela.destroy()
         
@@ -108,11 +105,6 @@ class PerfilUsuario:
         conexao = Conexao.deletar(sql)
         self._janela.destroy()
 
-        # Retorne à tela de login
-        from loginUsuario import Login
-        root = ttk.Window()
-        login = Login(root)
-        root.mainloop()
-
+        self._login_window.mostrar_login()  # Mostrar a janela de login novamente ao sair
 
 
