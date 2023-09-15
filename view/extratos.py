@@ -231,12 +231,16 @@ class Extratos:
 
     def gastos_totais(self):
         valor = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
+        if valor[0] == (None,):
+            return 0
         for i in valor:
             valor = str(i[0])
         return valor
     
     def ganhos_totais(self):
         valor = RegistrarGanho.ganho_total(self._id_usuario_atual)
+        if valor[0] == (None,):
+            return 0
         for i in valor:
             valor = str(i[0])
         return valor

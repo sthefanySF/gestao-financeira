@@ -4,6 +4,7 @@ from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from conexao import Conexao
+from controller.reegistrarGasto import RegistrarGasto
 from controller.registrarGanho import RegistrarGanho
 
 from perfilUsuario import PerfilUsuario
@@ -148,11 +149,9 @@ class RegistrarTransacoes:
 
        
         data_formatada = datetime.strptime(data, "%d/%m/%Y").strftime("%Y-%m-%d")
-
         
-        sql = f'INSERT INTO gastos (id_usuario, valor, descricao, categoria, data) VALUES ({self._id_usuario_atual}, {valor}, "{descricao}", "{categoria}", "{data_formatada}")'
-
-        Conexao.salvar_no_banco(sql)
+        novo_gasto = RegistrarGasto(self._id_usuario_atual, valor,descricao,categoria,data_formatada)
+       
         messagebox.showinfo("Registro de gasto", "Gasto registrado com sucesso!")
 
         self._entry_valor.delete(0, 'end')

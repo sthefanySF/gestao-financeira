@@ -90,19 +90,25 @@ class TelaInicial:
         ganho = RegistrarGanho.ganho_total(self._id_usuario_atual)
         gasto = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
 
-        if ganho and ganho[0] == None and gasto and gasto[0]:
-            saldo = float(ganho[0][0]) - float(gasto[0][0])
-        else:
+        if  ganho[0] != (None,):
+            
+           saldo = float(ganho[0][0])
+            
+        elif  ganho[0] == (None,) or gasto[0] == (None,):
+            
             saldo = 0
+            
+        else:
+            saldo = float(ganho[0][0]) - float(gasto[0][0])
 
         return saldo
 
     def gastos(self):
         gasto = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
 
-        if gasto and gasto[0] == None:
-            gasto_total = float(gasto[0][0])
-        else:
+        if gasto[0] == (None,):
             gasto_total = 0
+        else:
+            gasto_total = float(gasto[0][0])
 
         return gasto_total

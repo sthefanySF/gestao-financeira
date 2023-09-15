@@ -16,11 +16,11 @@ class RegistrarGasto:
         self.salvar_no_banco()
 
     def salvar_no_banco(self):
-        sql = '''
-            INSERT INTO gastos (id_usuario, valor, descricao, categoria, data)
-            VALUES (?, ?, ?, ?, ?)
-        '''
-        Conexao.salvar_no_banco(sql, (self.id_usuario, self.valor, self.descricao, self.categoria, self.data))
+        sql = f'''
+        INSERT INTO gastos (id_usuario, valor, descricao, categoria, data)
+        VALUES ('{self.id_usuario}','{self.valor}','{self.descricao}', '{self.categoria}','{self.data}')
+         '''
+        Conexao.salvar_no_banco(sql)
 
     @classmethod
     def retornar_todos(cls):

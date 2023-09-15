@@ -30,8 +30,6 @@ class Categorias:
         self.frame_botoes = ttk.Frame(self.content_frame)
         self.frame_botoes.pack(side="bottom", pady=10)
 
-        self.criar_nova_categoria_botao = ttk.Button(self.frame_botoes, text="Criar nova categoria", width=30, bootstyle="success", command=self.criar_nova_categoria)
-        self.criar_nova_categoria_botao.pack(side="left", padx=5)
 
         self.voltar_botao = ttk.Button(self.frame_botoes, text="Voltar", width=30, bootstyle="success", command=self._janela.destroy)
         self.voltar_botao.pack(side="left", padx=5)
@@ -42,8 +40,6 @@ class Categorias:
         style = ttk.Style()
         style.configure("Treeview.Heading", font=("Arial", 10, "bold"))
 
-    def criar_nova_categoria(self):
-        pass
 
     def adicionar_categorias_iniciais(self): #só para testar a visualização
         categorias = Conexao.retornar_todos('SELECT * FROM categoria;')
