@@ -15,7 +15,7 @@ from conexao import Conexao
 class PerfilUsuario:
     _photo = None  # Atributo de classe para manter a referência à imagem
 
-    def __init__(self, master, id_usuario_logado,login_window= None,tela_inicial_window=None):
+    def __init__(self, master, id_usuario_logado,login_window= None, tela_inicial_window=None):
         self._janela = ttk.Toplevel(master)
         self._janela.title('Gestão Fácil/Meu Perfil')
         self._janela.geometry('800x500')

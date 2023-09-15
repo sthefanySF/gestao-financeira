@@ -92,4 +92,4 @@ class Conexao:
         else:
             return False
         
-Conexao.deletar("DELETE FROM ganhos WHERE id_usuario = 42;")
+

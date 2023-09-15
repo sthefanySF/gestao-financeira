@@ -45,8 +45,7 @@ class RegistrarTransacoes:
         self._btn_extrato = ttk.Button(frame_menu, text='Extrato', width=20, bootstyle="success", command=self.abrir_extratro)
         self._btn_extrato.grid(row=3, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
-        self._btn_voltar = ttk.Button(frame_menu, text='Voltar', width=20, bootstyle="success", command=self.voltar)
-        self._btn_voltar.grid(row=5, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
+        
 
         # LabelFrame de Registrar ganhos
         self._frame_ganhos = ttk.LabelFrame(self._frame_principal, text="Registrar ganhos")
@@ -66,6 +65,10 @@ class RegistrarTransacoes:
         ttk.Label(self._frame_ganhos, text="Descrição do ganho adicional:").grid(row=4, column=0, padx=10, pady=5, sticky="w")
         self._text_descricao_ganhos = tk.Text(self._frame_ganhos, height=4, width=30)
         self._text_descricao_ganhos.grid(row=5, column=0, padx=10, pady=5, sticky="ew")
+        
+        ttk.Label(self._frame_ganhos, text="Data:").grid(row=6, column=0, padx=10, pady=5, sticky="w")
+        self._datepicker_data = ttk.DateEntry(self._frame_ganhos)
+        self._datepicker_data.grid(row=7, column=0, padx=10, pady=5, sticky="ew")
         
         ttk.Button(self._frame_ganhos, text="Registrar Ganho", bootstyle="success-outline",command=self.registar_ganho).grid(row=8, column=0, padx=10, pady=10, sticky="ew")
 
@@ -95,7 +98,7 @@ class RegistrarTransacoes:
         ttk.Button(self._frame_gastos, text="Registrar Gasto",bootstyle="success-outline", command=self.registrar_gasto).grid(row=8, column=0, padx=10, pady=10, sticky="ew")
     
     def abrir_perfil(self):
-        self._janela.withdraw()
+        #self._janela.withdraw()
         perfil_window = PerfilUsuario(self._janela,self._id_usuario_atual)
     
     def abrir_transacoes(self):
@@ -125,8 +128,9 @@ class RegistrarTransacoes:
         ganho_mensal = self._entry_ganho_mensal.get()
         ganho_adicional = self._entry_ganho_adicional.get()
         descricao = self._text_descricao_ganhos.get('1.0', 'end')
+        data = self._datepicker_data.entry.get()
       
-        novo_ganho = RegistrarGanho(self._id_usuario_atual,ganho_mensal,ganho_adicional,descricao)
+        novo_ganho = RegistrarGanho(self._id_usuario_atual,ganho_mensal,ganho_adicional,descricao, data )
         self.voltar
         return messagebox.showinfo("Registro de ganho","Ganho registrado com sucesso!")
     

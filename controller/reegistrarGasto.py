@@ -17,9 +17,9 @@ class RegistrarGasto:
 
     def salvar_no_banco(self):
         sql = f'''
-        INSERT INTO gastos (id_usuario, valor, descricao, categoria, data)
-        VALUES ('{self.id_usuario}','{self.valor}','{self.descricao}', '{self.categoria}','{self.data}')
-         '''
+            INSERT INTO gastos (id_usuario, valor, descricao, categoria, data)
+            VALUES ("{self.id_usuario}", "{self.valor}", "{self.descricao}", "{self.categoria}", "{self.data}")
+        '''
         Conexao.salvar_no_banco(sql)
 
     @classmethod

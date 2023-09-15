@@ -1,17 +1,18 @@
 from models.conexao import Conexao
 
 class RegistrarGanho:
-    def __init__(self, id_usuario, ganho_mensal, ganho_adicional, descricao_adicional):
+    def __init__(self, id_usuario, ganho_mensal, ganho_adicional, descricao_adicional, data):
         self.id_usuario = id_usuario
         self.ganho_mensal = ganho_mensal
         self.ganho_adicional = ganho_adicional
         self.descricao_adicional = descricao_adicional
+        self.data = data
         self.salvar_no_banco()
 
     def salvar_no_banco(self):
         sql = f'''
-            INSERT INTO ganhos (id_usuario, ganho_mensal, ganho_adicional, descricao_adicional)
-            VALUES ("{self.id_usuario}","{self.ganho_mensal}","{self.ganho_adicional}", "{self.descricao_adicional}")
+            INSERT INTO ganhos (id_usuario, ganho_mensal, ganho_adicional, descricao_adicional, data)
+            VALUES ("{self.id_usuario}","{self.ganho_mensal}","{self.ganho_adicional}", "{self.descricao_adicional}", "{self.data}")
         '''
         Conexao.salvar_no_banco(sql)
         
@@ -31,13 +32,13 @@ class RegistrarGanho:
         Conexao.deletar('DELETE FROM ganhos WHERE id = ?', (id_registro,))
 
     @classmethod
-    def atualizar(cls, id_registro, id_usuario, ganho_mensal, ganho_adicional, descricao_adicional):
+    def atualizar(cls, id_registro, id_usuario, ganho_mensal, ganho_adicional, descricao_adicional, data):
         sql = '''
             UPDATE ganhos
-            SET id_usuario = ?, ganho_mensal = ?, ganho_adicional = ?, descricao_adicional = ?
+            SET id_usuario = ?, ganho_mensal = ?, ganho_adicional = ?, descricao_adicional = ?, data = ?
             WHERE id = ?
         '''
-        Conexao.atualizar(sql, (id_usuario, ganho_mensal, ganho_adicional, descricao_adicional, id_registro))
+        Conexao.atualizar(sql, (id_usuario, ganho_mensal, ganho_adicional, descricao_adicional, data, id_registro))
    
     @classmethod
     def ganho_total(cls,id_usuario):

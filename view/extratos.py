@@ -82,8 +82,6 @@ class Extratos:
         self._btn_extrato = ttk.Button(frame_menu, text='Extrato', width=20, bootstyle="success")
         self._btn_extrato.grid(row=3, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
 
-        self._btn_voltar = ttk.Button(frame_menu, text='Voltar', width=20, bootstyle="success", command=self.voltar) 
-        self._btn_voltar.grid(row=5, column=0, sticky='w', pady=margin_menu, padx=margin_menu)
         
         # LabelFrame para Ganhos para a tabela de ganhos
         self._lbl_ganhos = ttk.LabelFrame(frame_menu_tabela, text='Ganhos', bootstyle="success")
@@ -119,19 +117,21 @@ class Extratos:
         
 
         # Tabela de Ganhos
-        self._tabela_ganhos = ttk.Treeview(self._lbl_ganhos, columns=('Ganho Mensal', 'Ganho Adicional', 'Descrição do Ganho Adicional'))
+        self._tabela_ganhos = ttk.Treeview(self._lbl_ganhos, columns=('Ganho Mensal', 'Ganho Adicional', 'Descrição do Ganho Adicional', 'Data'))
 
         # Larguras das colunas para a tabela de ganhos
         self._tabela_ganhos.column('#0', width=0)
         self._tabela_ganhos.column('Ganho Mensal', width=100)
         self._tabela_ganhos.column('Ganho Adicional', width=100)
-        self._tabela_ganhos.column('Descrição do Ganho Adicional', width=200)
+        self._tabela_ganhos.column('Descrição do Ganho Adicional', width=100)
+        self._tabela_ganhos.column('Data', width=100)
 
         # Cabeçalhos das colunas para a tabela de ganhos
         self._tabela_ganhos.heading('#0', text='', anchor=W)
         self._tabela_ganhos.heading('Ganho Mensal', text='Ganho Mensal', anchor=W)
         self._tabela_ganhos.heading('Ganho Adicional', text='Ganho Adicional', anchor=W)
         self._tabela_ganhos.heading('Descrição do Ganho Adicional', text='Descrição do Ganho Adicional', anchor=W)
+        self._tabela_ganhos.heading('Data', text='Data', anchor=W)
 
 
         # Scrollbar para a tabela de ganhos
@@ -183,7 +183,7 @@ class Extratos:
         self.atualizar_tabela_gastos()
 
     def abrir_perfil(self):
-        self._janela.withdraw()
+        #self._janela.withdraw()
         perfil_window = PerfilUsuario(self._janela,self._id_usuario_atual)
     
     def abrir_transacoes(self):
@@ -231,16 +231,12 @@ class Extratos:
 
     def gastos_totais(self):
         valor = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
-        if valor[0] == (None,):
-            return 0
         for i in valor:
             valor = str(i[0])
         return valor
     
     def ganhos_totais(self):
         valor = RegistrarGanho.ganho_total(self._id_usuario_atual)
-        if valor[0] == (None,):
-            return 0
         for i in valor:
             valor = str(i[0])
         return valor
