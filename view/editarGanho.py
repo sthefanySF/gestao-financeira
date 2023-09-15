@@ -3,12 +3,13 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 
 class JanelaEdicaoGanho:
-    def __init__(self, master, item_id, ganho_mensal, ganho_adicional, descricao, salvar_callback):
+    def __init__(self, master, item_id, ganho_mensal, ganho_adicional, descricao, data_ganho, salvar_callback):
         self._master = master
         self._item_id = item_id
         self._ganho_mensal = tk.StringVar(value=ganho_mensal)
         self._ganho_adicional = tk.StringVar(value=ganho_adicional)
         self._descricao = tk.StringVar(value=descricao)
+        self._data_ganho = data_ganho
         self._salvar_callback = salvar_callback
 
         self._janela_edicao = tk.Toplevel(master)
@@ -26,6 +27,14 @@ class JanelaEdicaoGanho:
         text_descricao = tk.Text(self._janela_edicao, height=4, width=30)
         text_descricao.insert("1.0", descricao)
         text_descricao.pack()
+        
+         # Campo de edição para a data do gasto
+        label_data = ttk.Label(self._janela_edicao, text='Data do Ganho:')
+        label_data.pack()
+
+        self._entry_data = ttk.Entry(self._janela_edicao)
+        self._entry_data.insert(0, self._data_ganho)  # Preencha a data atual
+        self._entry_data.pack()
 
         ttk.Button(self._janela_edicao, text="Salvar",  bootstyle="success-outline", command=self.salvar).pack()
 

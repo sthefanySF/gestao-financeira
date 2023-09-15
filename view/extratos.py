@@ -201,16 +201,6 @@ class Extratos:
     def voltar(self):
         self._janela.destroy()
 
-    def registar_ganho(self):
-        ganho_mensal = self._entry_ganho_mensal.get()
-        ganho_adicional = self._entry_ganho_adicional.get()
-        descricao = self._text_descricao_ganhos.get('1.0', 'end')
-      
-        novo_ganho = RegistrarGanho(self._id_usuario_atual, ganho_mensal, ganho_adicional, descricao)
-        
-        self.atualizar_tabela_ganhos()
-        
-        return messagebox.showinfo("Registro de ganho", "Ganho registrado com sucesso!")
 
     def atualizar_tabela_ganhos(self):
         for item in self._tabela_ganhos.get_children():
@@ -254,9 +244,10 @@ class Extratos:
         ganho_mensal = ganho_values[0]
         ganho_adicional = ganho_values[1]
         descricao = ganho_values[2]
+        data_ganho = ganho_values[3]
 
         
-        edicao_ganho = JanelaEdicaoGanho(self._janela, item_id, ganho_mensal, ganho_adicional, descricao, self.salvar_edicao_ganho)
+        edicao_ganho = JanelaEdicaoGanho(self._janela, item_id, ganho_mensal, ganho_adicional, descricao, data_ganho, self.salvar_edicao_ganho)
 
 
     def editar_gasto(self):
@@ -277,7 +268,7 @@ class Extratos:
 
 
     def salvar_edicao_ganho(self, item_id, novo_ganho_mensal, novo_ganho_adicional, nova_descricao):
-        self._tabela_ganhos.item(item_id, values=("ID", novo_ganho_mensal, novo_ganho_adicional, nova_descricao))
+        self._tabela_ganhos.item(item_id, values=(novo_ganho_mensal, novo_ganho_adicional, nova_descricao))
 
         messagebox.showinfo("Edição de ganho", "Ganho editado com sucesso.")
 
