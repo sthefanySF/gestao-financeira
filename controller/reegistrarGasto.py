@@ -31,13 +31,13 @@ class RegistrarGasto:
         Conexao.deletar('DELETE FROM gastos WHERE id = ?', (id_registro,))
 
     @classmethod
-    def atualizar(cls, id_registro, id_usuario, valor, descricao, categoria, data):
-        sql = '''
+    def atualizar(cls, id_registro, valor, descricao, categoria, data):
+        sql = f'''
             UPDATE gastos
-            SET id_usuario = ?, valor = ?, descricao = ?, categoria = ?, data = ?
-            WHERE id = ?
+            SET valor = '{valor}', descricao = '{descricao}', categoria = '{categoria}', data = '{data}'
+            WHERE id_usuario = {id_registro};
         '''
-        Conexao.atualizar(sql, (id_usuario, valor, descricao, categoria, data, id_registro))
+        Conexao.atualizar(sql)
     @classmethod
     def retornar_gastos(cls,id_usuario):
         return Conexao.retornar_usuario(f'SELECT * FROM gastos WHERE id_usuario = {id_usuario};')

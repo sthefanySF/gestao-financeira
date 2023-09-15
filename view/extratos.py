@@ -273,11 +273,11 @@ class Extratos:
         categoria_gasto = gasto_values[2]
         data_gasto = gasto_values[3]
 
-        edicao_gasto = JanelaEdicaoGasto(self._janela, item_id, valor_gasto, descricao_gasto, categoria_gasto, data_gasto, self.salvar_edicao_gasto)
+        edicao_gasto = JanelaEdicaoGasto(self._id_usuario_atual,self._janela, item_id, valor_gasto, descricao_gasto, categoria_gasto, data_gasto, self.salvar_edicao_gasto)
 
 
     def salvar_edicao_ganho(self, item_id, novo_ganho_mensal, novo_ganho_adicional, nova_descricao):
-        self._tabela_ganhos.item(item_id, values=("ID", novo_ganho_mensal, novo_ganho_adicional, nova_descricao))
+        self._tabela_ganhos.item(item_id, values=(novo_ganho_mensal, novo_ganho_adicional, nova_descricao))
 
         messagebox.showinfo("Edição de ganho", "Ganho editado com sucesso.")
 
