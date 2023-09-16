@@ -1,5 +1,6 @@
 import sqlite3
 import tkinter as tk
+from tkinter import messagebox
 import ttkbootstrap as ttk
 from PIL import Image, ImageTk
 import sys
@@ -89,29 +90,28 @@ class PerfilUsuario:
             self._tela_inicial_window.mostrar_tela_inicial()
 
     def obter_nome_usuario_logado(self, id_usuario_logado):
-        # Conecte-se ao banco de dados e execute a consulta
         sql = "SELECT nome FROM usuarios WHERE id = ?"
         conexao = sqlite3.connect('gestao_financeira.db')
         cursor = conexao.cursor()
         cursor.execute(sql, (id_usuario_logado,))
-        
-        # Obtenha o nome do usuário logado
-        nome_usuario = cursor.fetchone()[0]  # Assumindo que a primeira coluna é o nome
-
-        # Feche a conexão com o banco de dados
+        nome_usuario = cursor.fetchone()[0]  
         conexao.close()
     
         return nome_usuario
     
     def excluir_conta(self, id_usuario_logado=None):
-        # Abra a conexão com o banco de dados
-        print(id_usuario_logado)
-        conexao = Conexao
-        sql = f"DELETE FROM usuarios WHERE id = '{id_usuario_logado}';"
-        print(sql)
-        conexao = Conexao.deletar(sql)
-        self._janela.destroy()
+    
+        confirmacao = messagebox.askyesno('Confirmação de Exclusão', 'Você tem certeza que deseja excluir sua conta? Esta ação é irreversível.')
 
-        self._login_window.mostrar_login() 
+        if confirmacao:
+            conexao = Conexao
+            sql = f"DELETE FROM usuarios WHERE id = '{id_usuario_logado}';"
+            conexao = Conexao.deletar(sql)
+
+            # Exibir mensagem de sucesso após a exclusão
+            messagebox.showinfo('Conta Excluída', 'Sua conta foi excluída com sucesso.')
+            
+            self._janela.destroy()
+            self._login_window.mostrar_login()
 
 
