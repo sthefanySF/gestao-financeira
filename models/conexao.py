@@ -92,4 +92,26 @@ class Conexao:
         else:
             return False
         
+    @staticmethod
+    def excluir_ganho(ganho_id):
+        sql = "DELETE FROM ganhos WHERE id = ?"
+        parametros = (ganho_id,)
 
+        conexao = sqlite3.connect('gestao_financeira.db')
+        cursor = conexao.cursor()
+
+        cursor.execute(sql, parametros)
+        conexao.commit()
+        conexao.close()
+
+    @staticmethod
+    def excluir_gasto(gasto_id):
+        sql = "DELETE FROM gastos WHERE id = ?"
+        parametros = (gasto_id,)
+
+        conexao = sqlite3.connect('gestao_financeira.db')
+        cursor = conexao.cursor()
+
+        cursor.execute(sql, parametros)
+        conexao.commit()
+        conexao.close()

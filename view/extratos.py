@@ -4,10 +4,11 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
 import sys
+from conexao import Conexao
 
 from controller.reegistrarGasto import RegistrarGasto
-from view.editarGanho import JanelaEdicaoGanho
-from view.editarGasto import JanelaEdicaoGasto
+from editarGanho import JanelaEdicaoGanho
+from editarGasto import JanelaEdicaoGasto
 
 
 
@@ -117,22 +118,23 @@ class Extratos:
         
 
         # Tabela de Ganhos
-        self._tabela_ganhos = ttk.Treeview(self._lbl_ganhos, columns=('Ganho Mensal', 'Ganho Adicional', 'Descrição do Ganho Adicional', 'Data'))
+        self._tabela_ganhos = ttk.Treeview(self._lbl_ganhos, columns=('ID', 'Ganho Mensal', 'Ganho Adicional', 'Descrição do Ganho Adicional', 'Data'))
 
         # Larguras das colunas para a tabela de ganhos
-        self._tabela_ganhos.column('#0', width=0)
+        self._tabela_ganhos.column('#0', width=0, stretch=tk.NO)
+        self._tabela_ganhos.column('ID', width=0, stretch=tk.NO)  # Coluna para armazenar o ID (definida com largura 0 para ocultá-la)
         self._tabela_ganhos.column('Ganho Mensal', width=100)
         self._tabela_ganhos.column('Ganho Adicional', width=100)
         self._tabela_ganhos.column('Descrição do Ganho Adicional', width=100)
         self._tabela_ganhos.column('Data', width=100)
 
         # Cabeçalhos das colunas para a tabela de ganhos
-        self._tabela_ganhos.heading('#0', text='', anchor=W)
-        self._tabela_ganhos.heading('Ganho Mensal', text='Ganho Mensal', anchor=W)
-        self._tabela_ganhos.heading('Ganho Adicional', text='Ganho Adicional', anchor=W)
-        self._tabela_ganhos.heading('Descrição do Ganho Adicional', text='Descrição do Ganho Adicional', anchor=W)
-        self._tabela_ganhos.heading('Data', text='Data', anchor=W)
-
+        self._tabela_ganhos.heading('#0', text='', anchor=tk.W)
+        self._tabela_ganhos.heading('ID', text='', anchor=tk.W)  # Cabeçalho vazio para a coluna do ID
+        self._tabela_ganhos.heading('Ganho Mensal', text='Ganho Mensal', anchor=tk.W)
+        self._tabela_ganhos.heading('Ganho Adicional', text='Ganho Adicional', anchor=tk.W)
+        self._tabela_ganhos.heading('Descrição do Ganho Adicional', text='Descrição do Ganho Adicional', anchor=tk.W)
+        self._tabela_ganhos.heading('Data', text='Data', anchor=tk.W)
 
         # Scrollbar para a tabela de ganhos
         self._scrollbar_ganhos = ttk.Scrollbar(self._lbl_ganhos, orient='vertical', command=self._tabela_ganhos.yview)
@@ -149,10 +151,11 @@ class Extratos:
 
 
         # Tabela de Gastos
-        self._tabela_gastos = ttk.Treeview(self._lbl_gastos, columns=('Valor do gasto', 'Descrição do gasto', 'Categoria', 'Data'))
+        self._tabela_gastos = ttk.Treeview(self._lbl_gastos, columns=('ID','Valor do gasto', 'Descrição do gasto', 'Categoria', 'Data'))
 
         
-        self._tabela_gastos.column('#0', width=0)
+        self._tabela_gastos.column('#0', width=0, stretch=tk.NO)
+        self._tabela_gastos.column('ID', width=0, stretch=tk.NO)  # Coluna para armazenar o ID (definida com largura 0 para ocultá-la)
         self._tabela_gastos.column('Valor do gasto', width=100)
         self._tabela_gastos.column('Descrição do gasto', width=100)
         self._tabela_gastos.column('Categoria', width=100)
@@ -160,6 +163,7 @@ class Extratos:
 
       
         self._tabela_gastos.heading('#0', text='', anchor=W)
+        self._tabela_gastos.heading('ID', text='', anchor=tk.W)  # Cabeçalho vazio para a coluna do ID
         self._tabela_gastos.heading('Valor do gasto', text='Valor do gasto', anchor=W)
         self._tabela_gastos.heading('Descrição do gasto', text='Descrição do gasto', anchor=W)
         self._tabela_gastos.heading('Categoria', text='Categoria', anchor=W)
@@ -209,7 +213,8 @@ class Extratos:
         ganhos = RegistrarGanho.retornar_unico_usuario(self._id_usuario_atual)
         
         for ganho in ganhos:
-            self._tabela_ganhos.insert('', 'end', values=ganho[2:])  # Ignora o primeiro valor (ID)
+    # Insira o ID como primeiro valor (convertendo para inteiro), seguido pelos outros valores
+            self._tabela_ganhos.insert('', 'end', values=(int(ganho[0]), ganho[2], ganho[3], ganho[4], ganho[5]))
         
     def atualizar_tabela_gastos(self):
         for item in self._tabela_gastos.get_children():
@@ -217,7 +222,7 @@ class Extratos:
 
         gastos = RegistrarGasto.retornar_gastos(self._id_usuario_atual)
         for gasto in gastos:
-            self._tabela_gastos.insert('', 'end', values=gasto[2:])
+            self._tabela_gastos.insert('', 'end', values=(int(gasto[0]), gasto[2], gasto[3], gasto[4], gasto[5]))
 
     def gastos_totais(self):
         valor = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
@@ -280,32 +285,32 @@ class Extratos:
 
     
     def excluir_ganho(self):
-        selected_ganho = self._tabela_ganhos.selection()
-
-        if not selected_ganho:
+        selected_ganhos = self._tabela_ganhos.selection()
+        if not selected_ganhos:
             messagebox.showerror('Erro na exclusão', 'Selecione um ganho para excluir.')
             return
-
-        confirmacao = messagebox.askyesno('Confirmação', 'Tem certeza que deseja excluir este ganho?')
+        confirmacao = messagebox.askyesno('Confirmação de Exclusão', 'Você tem certeza que deseja excluir o ganho selecionado?')
 
         if confirmacao:
-            for item in selected_ganho:
-                self._tabela_ganhos.delete(item)
+            for item_id in selected_ganhos:
+                ganho_id = self._tabela_ganhos.item(item_id, 'values')[0]
+                Conexao.excluir_ganho(ganho_id)
+                self._tabela_ganhos.delete(item_id)
+                messagebox.showinfo('Ganho Excluído', 'O seu ganho foi excluído com sucesso.')
 
     def excluir_gasto(self):
-        selected_gasto = self._tabela_gastos.selection()
-
-        if not selected_gasto:
+        selected_gastos = self._tabela_gastos.selection()
+        if not selected_gastos:
             messagebox.showerror('Erro na exclusão', 'Selecione um gasto para excluir.')
             return
-
-        confirmacao = messagebox.askyesno('Confirmação', 'Tem certeza que deseja excluir este gasto?')
-
+        confirmacao = messagebox.askyesno('Confirmação de Exclusão', 'Você tem certeza que deseja excluir o gasto selecionado?')
         if confirmacao:
-            for item in selected_gasto:
-                self._tabela_gastos.delete(item)
-                    
-                    
+            for item_id in selected_gastos:
+                gasto_id = self._tabela_gastos.item(item_id, 'values')[0]
+                Conexao.excluir_gasto(gasto_id)
+                self._tabela_gastos.delete(item_id)
+                messagebox.showinfo('Gasto Excluído', 'O seu gasto foi excluído com sucesso.')
+                            
 
 
         
