@@ -41,4 +41,15 @@ class RegistrarGanho:
     @classmethod
     def ganho_total(cls,id_usuario):
         sql = f"SELECT SUM(ganho_mensal + ganho_adicional) FROM ganhos WHERE id_usuario = {id_usuario};"
+   
         return Conexao.retornar_usuario(sql)
+    @classmethod
+    def retornar_ganhos_por_data(cls, id_usuario, data_selecionada):
+        sql = f"SELECT * FROM ganhos WHERE id_usuario = {id_usuario} AND data = '{data_selecionada}';"
+        ganhos = Conexao.retornar_todos(sql)
+        print(ganhos)
+
+        return ganhos
+
+
+

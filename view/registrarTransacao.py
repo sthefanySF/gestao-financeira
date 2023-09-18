@@ -129,6 +129,7 @@ class RegistrarTransacoes:
         ganho_adicional = self._entry_ganho_adicional.get()
         descricao = self._text_descricao_ganhos.get('1.0', 'end')
         data = self._datepicker_data.entry.get()
+        print(data)
       
         novo_ganho = RegistrarGanho(self._id_usuario_atual,ganho_mensal,ganho_adicional,descricao, data )
         self.voltar
@@ -139,6 +140,7 @@ class RegistrarTransacoes:
         descricao = self._text_descricao.get('1.0', 'end')
         categoria = self._combo_categoria.get()
         data = self._datepicker_data.entry.get()
+        print(data)
 
       
         if not valor or not categoria or not data:
@@ -152,9 +154,9 @@ class RegistrarTransacoes:
             return
 
        
-        data_formatada = datetime.strptime(data, "%d/%m/%Y").strftime("%Y-%m-%d")
+        # data_formatada = datetime.strptime(data, "%d/%m/%Y").strftime("%Y-%m-%d")
         
-        novo_gasto = RegistrarGasto(self._id_usuario_atual, valor,descricao,categoria,data_formatada)
+        novo_gasto = RegistrarGasto(self._id_usuario_atual, valor,descricao,categoria,data)
        
         messagebox.showinfo("Registro de gasto", "Gasto registrado com sucesso!")
 

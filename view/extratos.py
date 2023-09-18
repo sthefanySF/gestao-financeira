@@ -1,3 +1,4 @@
+import datetime
 import tkinter as tk
 from tkinter import messagebox
 import ttkbootstrap as ttk
@@ -65,6 +66,13 @@ class Extratos:
         # LabelFrame para Gasto do mês
         self._lbl_gasto_mes = ttk.LabelFrame(frame_menu, text='Gasto do mês', bootstyle="danger")
         self._lbl_gasto_mes.grid(row=1, column=3, padx=10, pady=10, sticky='ew', rowspan=5)
+        
+        self._label_pesquisar = ttk.Label(frame_menu,text='Pesquisar por data')
+        self._label_pesquisar.grid(row=1, column=4, sticky='ew', pady=15, padx=10)
+        
+        self._data_entry = ttk.Entry(frame_menu)
+        self._data_entry.grid(row=2, column=4, sticky='ew', pady=10, padx=10)
+        self._data_entry.bind("<Return>", self.filtrar_ganhos_por_data)  # Pressione Enter para aplicar o filtro
 
         self.lbl = ttk.Label(self._lbl_gasto_mes, text=self.gastos_totais())
         self.lbl.config(font="Arial 30 bold")
@@ -295,8 +303,7 @@ class Extratos:
             # ganho_id = self._tabela_ganhos.item(item, 'values')[0]
             ganho_mensal = self._tabela_ganhos.item(item, 'values')[0]
             descricao_ganho = self._tabela_ganhos.item(item, 'values')[2]
-            print(ganho_mensal)
-            print(descricao_ganho)
+    
         
 
             # Consulta SQL para obter o ID do ganho com base no valor e na descrição
@@ -316,8 +323,9 @@ class Extratos:
             else:
                 messagebox.showwarning('Ganho não encontrado', 'O ganho não pôde ser encontrado no banco de dados.')
 
-        messagebox.showinfo('Ganho(s) excluído(s)', 'Ganho(s) excluído(s) com sucesso.')
         self.ganhos_totais
+        messagebox.showinfo('Ganho(s) excluído(s)', 'Ganho(s) excluído(s) com sucesso.')
+        
 
                 
 
@@ -335,10 +343,10 @@ class Extratos:
         
 
             # Consulta SQL para obter o ID do gasto com base no valor e na descrição
-            consulta = f"SELECT id FROM gastos WHERE valor = '{valor}' AND descricao = '{descricao}';"
+            consultaGanhos = f"SELECT id FROM gastos WHERE valor = '{valor}' AND descricao = '{descricao}';"
 
             # Execute a consulta SQL para obter o ID
-            resultado = Conexao.retornar_usuario(consulta)
+            resultado = Conexao.retornar_usuario(consultaGanhos)
 
 
             if resultado:
@@ -352,10 +360,36 @@ class Extratos:
             else:
                 messagebox.showwarning('Gasto não encontrado', 'O gasto não pôde ser encontrado no banco de dados.')
 
-        messagebox.showinfo('Gasto(s) excluído(s)', 'Gasto(s) excluído(s) com sucesso.')
         self.gastos_totais
-
+        messagebox.showinfo('Gasto(s) excluído(s)', 'Gasto(s) excluído(s) com sucesso.')
         
+    def filtrar_ganhos_por_data(self, event=None):
+        # Obtenha a data inserida pelo usuário
+        data_digitada = self._data_entry.get()
+
+        # Atualize a tabela de ganhos com base na data selecionada
+        self.atualizar_tabela_ganhos_por_data(data_digitada)
+    
+    def atualizar_tabela_ganhos_por_data(self, data_selecionada=None):
+        for item in self._tabela_ganhos.get_children():
+            self._tabela_ganhos.delete(item)
+        
+        for item in self._tabela_gastos.get_children():
+            self._tabela_gastos.delete(item)
+
+        ganhos = RegistrarGanho.retornar_ganhos_por_data(self._id_usuario_atual, data_selecionada)
+        
+        gastos = RegistrarGasto.retornar_ganhos_por_data(self._id_usuario_atual, data_selecionada)
+        # if ganhos == []:
+        #     self.atualizar_tabela_ganhos()
+        
+        for ganho in ganhos:
+            self._tabela_ganhos.insert('', 'end', values=ganho[2:])  # Ignora o primeiro valor (ID)
+        
+        for gasto in gastos:
+            self._tabela_gastos.insert('','end',values=gasto[2:])
+
+            
 if __name__ == "__main__":
     root = ttk.Window(themename='litera')
     login = Extratos(root)
