@@ -29,16 +29,14 @@ class RegistrarGanho:
 
     @classmethod
     def deletar(cls, id_registro):
-        Conexao.deletar('DELETE FROM ganhos WHERE id = ?', (id_registro,))
+        Conexao.deletar(f'DELETE FROM ganhos WHERE id = {id_registro};')
 
     @classmethod
-    def atualizar(cls, id_registro, id_usuario, ganho_mensal, ganho_adicional, descricao_adicional, data):
-        sql = '''
-            UPDATE ganhos
-            SET id_usuario = ?, ganho_mensal = ?, ganho_adicional = ?, descricao_adicional = ?, data = ?
-            WHERE id = ?
-        '''
-        Conexao.atualizar(sql, (id_usuario, ganho_mensal, ganho_adicional, descricao_adicional, data, id_registro))
+    def atualizar(cls, id_registro, ganho_mensal, ganho_adicional, descricao_adicional, data):
+        sql = f'''UPDATE ganhos
+            SET  ganho_mensal = '{ganho_mensal}', ganho_adicional = '{ganho_adicional}', descricao_adicional = '{descricao_adicional}', data = '{data}'
+            WHERE id_usuario = {id_registro};'''
+        Conexao.atualizar(sql)
    
     @classmethod
     def ganho_total(cls,id_usuario):

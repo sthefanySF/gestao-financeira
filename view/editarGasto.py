@@ -1,10 +1,14 @@
 import tkinter
 from tkinter import ttk
+from conexao import Conexao
+
+from controller.reegistrarGasto import RegistrarGasto
 
 
 class JanelaEdicaoGasto:
-    def __init__(self, master, item_id, valor_gasto, descricao_gasto, categoria_gasto, data_gasto, callback):
+    def __init__(self,usuario, master, item_id, valor_gasto, descricao_gasto, categoria_gasto, data_gasto, callback):
         self._master = master
+        self._id_usuario = usuario
         self._item_id = item_id
         self._valor_gasto = valor_gasto
         self._descricao_gasto = descricao_gasto
@@ -36,9 +40,14 @@ class JanelaEdicaoGasto:
         label_categoria = ttk.Label(self._janela_edicao, text='Categoria do Gasto:')
         label_categoria.pack()
 
-        self._entry_categoria = ttk.Entry(self._janela_edicao)
-        self._entry_categoria.insert(0, self._categoria_gasto)  # Preencha a categoria atual
-        self._entry_categoria.pack()
+        # self._entry_categoria = ttk.Entry(self._janela_edicao)
+        # self._entry_categoria.insert(0, self._categoria_gasto)  # Preencha a categoria atual
+        # self._entry_categoria.pack()
+        
+        ttk.Label(self._janela_edicao, text="Categoria:").pack()
+        self._combo_categoria = ttk.Combobox(self._janela_edicao, values= self.categorias())
+        self._combo_categoria.pack()
+        self._combo_categoria.set(self._categoria_gasto)
 
         # Campo de edição para a data do gasto
         label_data = ttk.Label(self._janela_edicao, text='Data do Gasto:')
@@ -51,13 +60,19 @@ class JanelaEdicaoGasto:
         # Botão para salvar as alterações
         btn_salvar = ttk.Button(self._janela_edicao, text='Salvar',  bootstyle="success-outline", command=self.salvar_edicao)
         btn_salvar.pack()
+    def categorias(self):
+        categorias = Conexao.retornar_todos('SELECT nome FROM categoria;')
+        return categorias
 
     def salvar_edicao(self):
         # Obtenha os novos valores dos campos de edição
         novo_valor = self._entry_valor.get()
         nova_descricao = self._entry_descricao.get()
-        nova_categoria = self._entry_categoria.get()
+        nova_categoria = self._combo_categoria.get()
         nova_data = self._entry_data.get()
+        print(self._id_usuario)
+        
+        gasto = RegistrarGasto.atualizar(self._id_usuario,novo_valor,nova_descricao,nova_categoria,nova_data)
 
         # Chame a função de retorno (callback) passando os novos valores
         self._callback(self._item_id, novo_valor, nova_descricao, nova_categoria, nova_data)

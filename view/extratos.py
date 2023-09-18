@@ -7,8 +7,8 @@ import sys
 from conexao import Conexao
 
 from controller.reegistrarGasto import RegistrarGasto
-from editarGanho import JanelaEdicaoGanho
-from editarGasto import JanelaEdicaoGasto
+from view.editarGanho import JanelaEdicaoGanho
+from view.editarGasto import JanelaEdicaoGasto
 
 
 
@@ -118,23 +118,22 @@ class Extratos:
         
 
         # Tabela de Ganhos
-        self._tabela_ganhos = ttk.Treeview(self._lbl_ganhos, columns=('ID', 'Ganho Mensal', 'Ganho Adicional', 'Descrição do Ganho Adicional', 'Data'))
+        self._tabela_ganhos = ttk.Treeview(self._lbl_ganhos, columns=('Ganho Mensal', 'Ganho Adicional', 'Descrição do Ganho Adicional', 'Data'))
 
         # Larguras das colunas para a tabela de ganhos
-        self._tabela_ganhos.column('#0', width=0, stretch=tk.NO)
-        self._tabela_ganhos.column('ID', width=0, stretch=tk.NO)  # Coluna para armazenar o ID (definida com largura 0 para ocultá-la)
+        self._tabela_ganhos.column('#0', width=0)
         self._tabela_ganhos.column('Ganho Mensal', width=100)
         self._tabela_ganhos.column('Ganho Adicional', width=100)
         self._tabela_ganhos.column('Descrição do Ganho Adicional', width=100)
         self._tabela_ganhos.column('Data', width=100)
 
         # Cabeçalhos das colunas para a tabela de ganhos
-        self._tabela_ganhos.heading('#0', text='', anchor=tk.W)
-        self._tabela_ganhos.heading('ID', text='', anchor=tk.W)  # Cabeçalho vazio para a coluna do ID
-        self._tabela_ganhos.heading('Ganho Mensal', text='Ganho Mensal', anchor=tk.W)
-        self._tabela_ganhos.heading('Ganho Adicional', text='Ganho Adicional', anchor=tk.W)
-        self._tabela_ganhos.heading('Descrição do Ganho Adicional', text='Descrição do Ganho Adicional', anchor=tk.W)
-        self._tabela_ganhos.heading('Data', text='Data', anchor=tk.W)
+        self._tabela_ganhos.heading('#0', text='', anchor=W)
+        self._tabela_ganhos.heading('Ganho Mensal', text='Ganho Mensal', anchor=W)
+        self._tabela_ganhos.heading('Ganho Adicional', text='Ganho Adicional', anchor=W)
+        self._tabela_ganhos.heading('Descrição do Ganho Adicional', text='Descrição do Ganho Adicional', anchor=W)
+        self._tabela_ganhos.heading('Data', text='Data', anchor=W)
+
 
         # Scrollbar para a tabela de ganhos
         self._scrollbar_ganhos = ttk.Scrollbar(self._lbl_ganhos, orient='vertical', command=self._tabela_ganhos.yview)
@@ -151,11 +150,10 @@ class Extratos:
 
 
         # Tabela de Gastos
-        self._tabela_gastos = ttk.Treeview(self._lbl_gastos, columns=('ID','Valor do gasto', 'Descrição do gasto', 'Categoria', 'Data'))
+        self._tabela_gastos = ttk.Treeview(self._lbl_gastos, columns=('Valor do gasto', 'Descrição do gasto', 'Categoria', 'Data'))
 
         
-        self._tabela_gastos.column('#0', width=0, stretch=tk.NO)
-        self._tabela_gastos.column('ID', width=0, stretch=tk.NO)  # Coluna para armazenar o ID (definida com largura 0 para ocultá-la)
+        self._tabela_gastos.column('#0', width=0)
         self._tabela_gastos.column('Valor do gasto', width=100)
         self._tabela_gastos.column('Descrição do gasto', width=100)
         self._tabela_gastos.column('Categoria', width=100)
@@ -163,7 +161,6 @@ class Extratos:
 
       
         self._tabela_gastos.heading('#0', text='', anchor=W)
-        self._tabela_gastos.heading('ID', text='', anchor=tk.W)  # Cabeçalho vazio para a coluna do ID
         self._tabela_gastos.heading('Valor do gasto', text='Valor do gasto', anchor=W)
         self._tabela_gastos.heading('Descrição do gasto', text='Descrição do gasto', anchor=W)
         self._tabela_gastos.heading('Categoria', text='Categoria', anchor=W)
@@ -213,8 +210,7 @@ class Extratos:
         ganhos = RegistrarGanho.retornar_unico_usuario(self._id_usuario_atual)
         
         for ganho in ganhos:
-    # Insira o ID como primeiro valor (convertendo para inteiro), seguido pelos outros valores
-            self._tabela_ganhos.insert('', 'end', values=(int(ganho[0]), ganho[2], ganho[3], ganho[4], ganho[5]))
+            self._tabela_ganhos.insert('', 'end', values=ganho[2:])  # Ignora o primeiro valor (ID)
         
     def atualizar_tabela_gastos(self):
         for item in self._tabela_gastos.get_children():
@@ -222,19 +218,22 @@ class Extratos:
 
         gastos = RegistrarGasto.retornar_gastos(self._id_usuario_atual)
         for gasto in gastos:
-            self._tabela_gastos.insert('', 'end', values=(int(gasto[0]), gasto[2], gasto[3], gasto[4], gasto[5]))
+            self._tabela_gastos.insert('', 'end', values=gasto[2:])
 
     def gastos_totais(self):
         valor = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
-        for i in valor:
-            valor = str(i[0])
-        return valor
-    
+        if valor ==  [(None,)]:
+            return 0
+        else:
+            return str(valor[0][0])
+
     def ganhos_totais(self):
         valor = RegistrarGanho.ganho_total(self._id_usuario_atual)
-        for i in valor:
-            valor = str(i[0])
-        return valor
+        if valor ==  [(None,)]:
+            return 0
+        else:
+            return str(valor[0][0])
+
     
     
     def editar_ganho(self):
@@ -252,7 +251,7 @@ class Extratos:
         data_ganho = ganho_values[3]
 
         
-        edicao_ganho = JanelaEdicaoGanho(self._janela, item_id, ganho_mensal, ganho_adicional, descricao, data_ganho, self.salvar_edicao_ganho)
+        edicao_ganho = JanelaEdicaoGanho(self._janela,self._id_usuario_atual, item_id, ganho_mensal, ganho_adicional, descricao, data_ganho, self.salvar_edicao_ganho)
 
 
     def editar_gasto(self):
@@ -269,11 +268,11 @@ class Extratos:
         categoria_gasto = gasto_values[2]
         data_gasto = gasto_values[3]
 
-        edicao_gasto = JanelaEdicaoGasto(self._janela, item_id, valor_gasto, descricao_gasto, categoria_gasto, data_gasto, self.salvar_edicao_gasto)
+        edicao_gasto = JanelaEdicaoGasto(self._id_usuario_atual,self._janela, item_id, valor_gasto, descricao_gasto, categoria_gasto, data_gasto, self.salvar_edicao_gasto)
 
 
-    def salvar_edicao_ganho(self, item_id, novo_ganho_mensal, novo_ganho_adicional, nova_descricao):
-        self._tabela_ganhos.item(item_id, values=(novo_ganho_mensal, novo_ganho_adicional, nova_descricao))
+    def salvar_edicao_ganho(self, item_id, novo_ganho_mensal, novo_ganho_adicional, nova_descricao,nova_data):
+        self._tabela_ganhos.item(item_id, values=(novo_ganho_mensal, novo_ganho_adicional, nova_descricao,nova_data))
 
         messagebox.showinfo("Edição de ganho", "Ganho editado com sucesso.")
 
@@ -286,32 +285,75 @@ class Extratos:
     
     def excluir_ganho(self):
         selected_ganhos = self._tabela_ganhos.selection()
+
         if not selected_ganhos:
             messagebox.showerror('Erro na exclusão', 'Selecione um ganho para excluir.')
             return
-        confirmacao = messagebox.askyesno('Confirmação de Exclusão', 'Você tem certeza que deseja excluir o ganho selecionado?')
 
-        if confirmacao:
-            for item_id in selected_ganhos:
-                ganho_id = self._tabela_ganhos.item(item_id, 'values')[0]
-                Conexao.excluir_ganho(ganho_id)
-                self._tabela_ganhos.delete(item_id)
-                messagebox.showinfo('Ganho Excluído', 'O seu ganho foi excluído com sucesso.')
+        # Loop sobre os itens selecionados
+        for item in selected_ganhos:
+            # ganho_id = self._tabela_ganhos.item(item, 'values')[0]
+            ganho_mensal = self._tabela_ganhos.item(item, 'values')[0]
+            descricao_ganho = self._tabela_ganhos.item(item, 'values')[2]
+            print(ganho_mensal)
+            print(descricao_ganho)
+        
+
+            # Consulta SQL para obter o ID do ganho com base no valor e na descrição
+            consulta = f"SELECT id FROM ganhos WHERE ganho_mensal = '{ganho_mensal}' AND descricao_adicional = '{descricao_ganho}';"
+
+            # Execute a consulta SQL para obter o ID
+            resultado = Conexao.retornar_usuario(consulta)
+
+            if resultado:
+                ganho_id = resultado[0][0]  # Supondo que o ID seja a primeira coluna na consulta
+
+                # Exclua o ganho com base no ID
+                RegistrarGanho.deletar(ganho_id)
+
+                # Exclua o item da tabela após a exclusão no banco de dados
+                self._tabela_ganhos.delete(item)
+            else:
+                messagebox.showwarning('Ganho não encontrado', 'O ganho não pôde ser encontrado no banco de dados.')
+
+        messagebox.showinfo('Ganho(s) excluído(s)', 'Ganho(s) excluído(s) com sucesso.')
+        self.ganhos_totais
+
+                
 
     def excluir_gasto(self):
-        selected_gastos = self._tabela_gastos.selection()
-        if not selected_gastos:
+        selected_gasto = self._tabela_gastos.selection()
+
+        if not selected_gasto:
             messagebox.showerror('Erro na exclusão', 'Selecione um gasto para excluir.')
             return
-        confirmacao = messagebox.askyesno('Confirmação de Exclusão', 'Você tem certeza que deseja excluir o gasto selecionado?')
-        if confirmacao:
-            for item_id in selected_gastos:
-                gasto_id = self._tabela_gastos.item(item_id, 'values')[0]
-                Conexao.excluir_gasto(gasto_id)
-                self._tabela_gastos.delete(item_id)
-                messagebox.showinfo('Gasto Excluído', 'O seu gasto foi excluído com sucesso.')
-                            
 
+        # Loop sobre os itens selecionados
+        for item in selected_gasto:
+            valor = self._tabela_gastos.item(item, 'values')[0]
+            descricao = self._tabela_gastos.item(item, 'values')[1]
+        
+
+            # Consulta SQL para obter o ID do gasto com base no valor e na descrição
+            consulta = f"SELECT id FROM gastos WHERE valor = '{valor}' AND descricao = '{descricao}';"
+
+            # Execute a consulta SQL para obter o ID
+            resultado = Conexao.retornar_usuario(consulta)
+
+
+            if resultado:
+                gasto_id = resultado[0][0]  # Supondo que o ID seja a primeira coluna na consulta
+
+                # Exclua o gasto com base no ID
+                RegistrarGasto.deletar(gasto_id)
+
+                # Exclua o item da tabela após a exclusão no banco de dados
+                self._tabela_gastos.delete(item)
+            else:
+                messagebox.showwarning('Gasto não encontrado', 'O gasto não pôde ser encontrado no banco de dados.')
+
+        messagebox.showinfo('Gasto(s) excluído(s)', 'Gasto(s) excluído(s) com sucesso.')
+        self.gastos_totais
 
         
 if __name__ == "__main__":
