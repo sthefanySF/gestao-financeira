@@ -79,11 +79,9 @@ class Cadastro:
 
         self._frame_cadastro = ttk.Frame(self._janela)
         self._frame_cadastro.grid(row=0, column=1)
-        self._lbl_logo = ttk.Label(self._frame_cadastro, text='Cadastre-se')
-        self._lbl_logo.config(font="Arial 15 bold")
-        self._lbl_logo.grid(row=0, column=2, columnspan=4, pady=30)
+        
 
-        self._lbl_titulo = ttk.Label(self._frame_cadastro, text='Faça seu cadastro', font='Helvetica 10 bold')
+        self._lbl_titulo = ttk.Label(self._frame_cadastro, text='Faça seu cadastro', font='Arial 12 bold')
         self._lbl_titulo.grid(row=0, column=3, pady=10, sticky="n")
 
         self._lbl_nome = ttk.Label(self._frame_cadastro, text='Nome:', width=30).grid(row=1, column=3, sticky="e")

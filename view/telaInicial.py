@@ -89,7 +89,7 @@ class TelaInicial:
         ganho = RegistrarGanho.ganho_total(self._id_usuario_atual)
         gasto = RegistrarGasto.retornar_total_gastos(self._id_usuario_atual)
 
-        if  ganho[0] != (None,):
+        if  ganho[0] != (None,) and gasto[0] == (None,):
             
            saldo = float(ganho[0][0])
             
